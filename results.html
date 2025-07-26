@@ -2,37 +2,104 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>📋 Ergebnisse & Bearbeitung</title>
+  <title>📋 Schnitzeljagd Ergebnisse</title>
   <style>
-    body { font-family: Arial, sans-serif; max-width: 800px; margin: 2rem auto; padding: 1rem; color: #333; }
-    h2 { font-size: 1.5rem; margin-bottom: 1rem; }
-    table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; }
-    th, td { border: 1px solid #ccc; padding: 0.5rem; text-align: left; }
-    th { background: #f4f4f4; }
-    input, button { font-size: 1rem; padding: 0.5rem; margin: 0.5rem 0; }
-    button { cursor: pointer; background: #007ACC; color: #fff; border: none; border-radius: 4px; }
-    input[type="text"] { width: calc(100% - 1rem); box-sizing: border-box; }
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 1rem;
+      color: #333;
+    }
+    h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1rem;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 0.5rem;
+      text-align: left;
+    }
+    th {
+      background: #f4f4f4;
+    }
+    form {
+      margin-top: 1rem;
+    }
+    label {
+      display: block;
+      margin: 0.5rem 0;
+    }
+    input[type="text"],
+    input[type="number"] {
+      width: calc(100% - 1rem);
+      padding: 0.5rem;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+    button {
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 0.5rem;
+      border: none;
+      border-radius: 4px;
+      background: #007ACC;
+      color: #fff;
+    }
+    .delBtn { background: #dc3545; }
+    .editBtn { background: #28a745; }
+    /* Debug style */
+    #debug {
+      background: #eee;
+      padding: 0.5rem;
+      margin-bottom: 1rem;
+      white-space: pre-wrap;
+      font-family: monospace;
+    }
   </style>
 </head>
 <body>
   <h2>📋 Schnitzeljagd Ergebnisse</h2>
+
+  <!-- DEBUG: Zeigt den rohen Inhalt von duelken_scores -->
+  <pre id="debug"></pre>
+
   <table id="resultsTable">
     <thead>
-      <tr><th>Name</th><th>Zeit</th><th>Aktion</th></tr>
+      <tr>
+        <th>Name</th>
+        <th>Zeit</th>
+        <th>Aktion</th>
+      </tr>
     </thead>
     <tbody></tbody>
   </table>
 
-  <h3>Neuen Eintrag hinzufügen / bearbeiten</h3>
+  <h3>Eintrag hinzufügen/bearbeiten</h3>
   <form id="editForm">
-    <label>Index: <input type="number" id="entryIndex" min="0" placeholder="0 für neuen Eintrag"></label><br>
-    <label>Name: <input type="text" id="editName" placeholder="Pseudonym oder Name"></label><br>
-    <label>Zeit: <input type="text" id="editTime" placeholder="z. B. 5m 30s"></label><br>
+    <label>
+      Index (0 für neuen Eintrag):
+      <input type="number" id="entryIndex" min="0" placeholder="Index">
+    </label>
+    <label>
+      Name:
+      <input type="text" id="editName" placeholder="Pseudonym oder Name">
+    </label>
+    <label>
+      Zeit:
+      <input type="text" id="editTime" placeholder="z. B. 5m 30s">
+    </label>
     <button type="submit">Speichern</button>
   </form>
 
   <script>
-    // Lade und zeige gespeicherte Scores
+    // Lade vorhandene Scores
     let scores = JSON.parse(localStorage.getItem('duelken_scores') || '[]');
     const tbody = document.querySelector('#resultsTable tbody');
     const form = document.getElementById('editForm');
@@ -40,6 +107,7 @@
     const nameInput = document.getElementById('editName');
     const timeInput = document.getElementById('editTime');
 
+    // Rendertabelle
     function render() {
       tbody.innerHTML = '';
       scores.forEach((e, i) => {
@@ -47,13 +115,16 @@
         tr.innerHTML = `
           <td>${e.name}</td>
           <td>${e.time}</td>
-          <td><button data-index="${i}" class="editBtn">Bearbeiten</button> <button data-index="${i}" class="delBtn">Löschen</button></td>
-        `;
+          <td>
+            <button class="editBtn" data-index="${i}">Bearbeiten</button>
+            <button class="delBtn" data-index="${i}">Löschen</button>
+          </td>`;
         tbody.appendChild(tr);
       });
       attachButtons();
     }
 
+    // Buttonsfunktionen zuweisen
     function attachButtons() {
       document.querySelectorAll('.editBtn').forEach(btn => {
         btn.onclick = () => {
@@ -65,29 +136,39 @@
       });
       document.querySelectorAll('.delBtn').forEach(btn => {
         btn.onclick = () => {
-          scores.splice(btn.dataset.index, 1);
+          const i = parseInt(btn.dataset.index);
+          scores.splice(i, 1);
           localStorage.setItem('duelken_scores', JSON.stringify(scores));
           render();
         };
       });
     }
 
+    // Formular absenden
     form.onsubmit = e => {
       e.preventDefault();
       const i = parseInt(idxInput.value);
-      const entry = { name: nameInput.value.trim() || '-', time: timeInput.value.trim() };
-      if (!entry.time) return;
+      const entry = {
+        name: nameInput.value.trim() || '-',
+        time: timeInput.value.trim()
+      };
+      if (!entry.time) return;  // Zeit ist Pflicht
       if (!isNaN(i) && i >= 0 && i < scores.length) {
-        scores[i] = entry;
+        scores[i] = entry;      // Bearbeiten
       } else {
-        scores.push(entry);
+        scores.push(entry);     // Neuer Eintrag
       }
       localStorage.setItem('duelken_scores', JSON.stringify(scores));
       form.reset();
       render();
     };
 
+    // Initial render
     render();
+
+    // DEBUG-Anzeige aktualisieren
+    document.getElementById('debug').textContent =
+      JSON.stringify(scores, null, 2);
   </script>
 </body>
 </html>
