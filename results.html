@@ -16,20 +16,20 @@
       text-align: center;
       color: #558b2f;
       font-size: 2rem;
-      margin-bottom: 0.5rem;
+      margin-bottom: 1rem;
     }
-    #timeDisplay, p {
+    #timeDisplay {
       font-size: 1.2rem;
-      margin-top: 0.5rem;
+      margin-bottom: 1rem;
     }
     form {
-      margin-top: 1rem;
+      margin-bottom: 1rem;
     }
     input, button {
       width: 100%;
       padding: 0.8rem;
+      margin: 0.5rem 0;
       font-size: 1.1rem;
-      margin-top: 0.5rem;
       border-radius: 8px;
       box-sizing: border-box;
     }
@@ -42,16 +42,13 @@
       border: none;
       cursor: pointer;
     }
-    button:hover {
-      background: #9ccc65;
-    }
     table {
       width: 100%;
       border-collapse: collapse;
       margin-top: 1rem;
     }
     th, td {
-      border: 2px dashed #558b2f;
+      border: 1px solid #ccc;
       padding: 0.5rem;
       text-align: left;
     }
@@ -61,7 +58,7 @@
   </style>
 </head>
 <body>
-  <h1>🎁 Finale</h1>
+  <h1>🎁 Finale – Spielplatz Schirickstraße</h1>
   <div id="timeDisplay">Deine Zeit: …</div>
 
   <form id="scoreForm">
@@ -77,42 +74,39 @@
   </table>
 
   <script>
-    // Zeit aus localStorage holen
+    // Zeit berechnen
     const timerEnabled = localStorage.getItem('duelken_timerEnabled') === 'true';
-    const start = timerEnabled ? parseInt(localStorage.getItem('duelken_startTime'), 10) : null;
-    const now = Date.now();
-    const diff = start ? now - start : 0;
-    const mins = start ? Math.floor(diff / 60000) : 0;
-    const secs = start ? Math.floor((diff % 60000) / 1000) : 0;
-    const timeStr = timerEnabled ? `${mins}m ${secs}s` : '-';
+    let startTime = timerEnabled ? parseInt(localStorage.getItem('duelken_startTime'), 10) : null;
+    if (!startTime) startTime = Date.now();
+    const diff = Date.now() - startTime;
+    const mins = Math.floor(diff / 60000);
+    const secs = Math.floor((diff % 60000) / 1000);
+    const timeStr = mins + 'm ' + secs + 's';
     document.getElementById('timeDisplay').textContent = 'Deine Zeit: ' + timeStr;
 
-    // Daten laden und Tabelle rendern
-    let scores = JSON.parse(localStorage.getItem('duelken_scores') || '[]');
+    // Scores verwalten
+    const form = document.getElementById('scoreForm');
     const tbody = document.querySelector('#resultsTable tbody');
+    let scores = JSON.parse(localStorage.getItem('duelken_scores') || '[]');
+
     function render() {
       tbody.innerHTML = '';
-      scores.forEach(e => {
+      scores.forEach(entry => {
         const tr = document.createElement('tr');
-        tr.innerHTML = `<td>${e.name}</td><td>${e.time}</td>`;
+        tr.innerHTML = `<td>${entry.name}</td><td>${entry.time}</td>`;
         tbody.appendChild(tr);
       });
     }
-    render();
 
-    // Formular-Handling
-    document.getElementById('scoreForm').onsubmit = e => {
+    render(); // initiale Anzeige
+
+    form.onsubmit = e => {
       e.preventDefault();
-      if (!timerEnabled) {
-        alert('Der Timer war nicht aktiviert.');
-        return;
-      }
       const name = document.getElementById('playerName').value.trim() || '-';
       scores.push({ name, time: timeStr });
       localStorage.setItem('duelken_scores', JSON.stringify(scores));
       render();
-      document.getElementById('playerName').value = '';
-      alert('Danke! Dein Eintrag wurde hinzugefügt.');
+      form.reset();
     };
   </script>
 </body>
