@@ -1,8 +1,34 @@
 <!DOCTYPE html>
 <html>
-<head><meta charset="UTF-8"><title>Station 1: Narrenmühle</title></head>
+<head>
+  <meta charset="UTF-8">
+  <title>Station 1: Narrenmühle</title>
+  <style>
+    body { font-family: sans-serif; max-width: 600px; margin: 2rem auto; padding: 1rem; }
+    input, button { font-size: 1rem; padding: 0.5rem; margin-top: 1rem; }
+    #feedback { margin-top: 1rem; color: red; }
+  </style>
+</head>
 <body>
-<h2>🏰 Station 1: Narrenmühle</h2>
-<p>Zähle die Fenster der Narrenmühle und multipliziere mit 3.</p>
+  <h2>🏰 Station 1: Narrenmühle</h2>
+  <p><strong>Aufgabe:</strong><br>
+     Zähle die Fenster der Narrenmühle und multipliziere die Zahl mit 3.</p>
+
+  <!-- Hier trägst du die 12 ein -->
+  <input type="number" id="answer" placeholder="Deine Lösung">
+  <button id="check">Antwort prüfen</button>
+  <div id="feedback"></div>
+
+  <script>
+    document.getElementById('check').onclick = function() {
+      const ans = document.getElementById('answer').value.trim();
+      if (ans === '12') {
+        // Weiterleitung zur Station 2
+        window.location.href = 'station2.html';
+      } else {
+        document.getElementById('feedback').innerText = 'Leider falsch – versuche es noch einmal.';
+      }
+    };
+  </script>
 </body>
 </html>
