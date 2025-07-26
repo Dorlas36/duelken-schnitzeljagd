@@ -1,10 +1,23 @@
 <!DOCTYPE html>
 <html>
-<head><meta charset="UTF-8"><title>Offizieller Start</title></head>
+<head><meta charset="UTF-8"><title>Station Start</title></head>
 <body>
-<h2>🎉 Willkommen am offiziellen Startpunkt der Schnitzeljagd durch Dülken!</h2>
-<p>Du wirst 5 Orte entdecken, Rätsel lösen und ein Geheimnis lüften.</p>
-<h3>Hinweis zur nächsten Station:</h3>
-<p>„Gehe zum Ort, wo sich alles dreht – dort, wo die Jecken Rat und Ehrenmütze tragen.“</p>
+  <h2>🎉 Du hast den Alter Markt gefunden!</h2>
+  <p>Ab hier startet das spannende Rätsel durch Dülken.</p>
+  <p><strong>Aufgabe:</strong><br>
+     Wo dreht sich alles? (Tipp: Narrenmühle)</p>
+  <input id="answer" placeholder="z. B. Narrenmühle">
+  <button id="check">Antwort prüfen</button>
+  <div id="feedback"></div>
+  <script>
+    document.getElementById('check').onclick = () => {
+      let ans = document.getElementById('answer').value.trim().toLowerCase();
+      if (ans === 'narrenmühle' || ans === 'narrenmuehle') {
+        window.location.href = 'station1.html';
+      } else {
+        document.getElementById('feedback').innerText = 'Falsch, probiere es noch mal.';
+      }
+    };
+  </script>
 </body>
 </html>
