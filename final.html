@@ -1,102 +1,21 @@
 <!DOCTYPE html>
-<html lang="de">
-<head>
-  <meta charset="UTF-8">
-  <title>🔢 Rätsel 6 – Finale: Spielplatz Schirickstraße</title>
-  <style>
-    body { font-family: Arial, sans-serif; max-width:640px; margin:2rem auto; padding:1rem; color:#333; }
-    h2 { font-size:1.5rem; margin-bottom:.5rem; }
-    #timeDisplay { font-size:1.2rem; margin-bottom:1rem; }
-    form, table { width:100%; margin-top:1rem; }
-    label { display:block; margin:0.5rem 0; }
-    input[type="text"] { width:100%; padding:.6rem; font-size:1rem; box-sizing:border-box; }
-    button { width:100%; padding:.6rem; font-size:1rem; margin-top:.5rem; border:none; border-radius:4px; background:#007ACC; color:#fff; cursor:pointer; }
-    table { border-collapse:collapse; margin-top:1rem; width:100%; }
-    th, td { border:1px solid #ccc; padding:.5rem; text-align:left; }
-    th { background:#f4f4f4; }
-    .delBtn { background:#dc3545; margin-left:.5rem; }
-  </style>
-</head>
-<body>
-
-  <h2>🔢 Rätsel 6 – Finale: Spielplatz Schirickstraße</h2>
-  <div id="timeDisplay">Deine Zeit: …</div>
-
-  <form id="scoreForm">
-    <label>
-      Dein Name (optional):
-      <input type="text" id="playerName" placeholder="Pseudonym oder Name">
-    </label>
-    <label>
-      Zeit (kann angepasst werden):
-      <input type="text" id="playerTime" readonly>
-    </label>
-    <button type="submit">Eintragen (freiwillig)</button>
-  </form>
-
-  <table id="resultsTable">
-    <thead>
-      <tr><th>Name</th><th>Zeit</th><th>Aktion</th></tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-
-  <script>
-  (function() {
-    // 1) Timer ermitteln
-    let start = parseInt(localStorage.getItem('duelken_startTime'), 10);
-    if (isNaN(start)) start = Date.now();
-    const diff = Date.now() - start;
-    const mins = Math.floor(diff / 60000);
-    const secs = Math.floor((diff % 60000) / 1000);
-    const timeStr = mins + 'm ' + secs + 's';
-
-    // 2) Anzeige aktualisieren
-    document.getElementById('timeDisplay').textContent = 'Deine Zeit: ' + timeStr;
-    const timeInput = document.getElementById('playerTime');
-    timeInput.value = timeStr;
-
-    // 3) Daten laden & Tabelle rendern
-    let scores = JSON.parse(localStorage.getItem('duelken_scores') || '[]');
-    const tbody = document.querySelector('#resultsTable tbody');
-
-    function render() {
-      tbody.innerHTML = '';
-      scores.forEach((e, i) => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td>${e.name}</td>
-          <td>${e.time}</td>
-          <td>
-            <button class="delBtn" data-index="${i}">Löschen</button>
-          </td>`;
-        tbody.appendChild(tr);
-      });
-      // Delete-Buttons
-      tbody.querySelectorAll('.delBtn').forEach(btn => {
-        btn.onclick = () => {
-          scores.splice(btn.dataset.index, 1);
-          localStorage.setItem('duelken_scores', JSON.stringify(scores));
-          render();
-        };
-      });
-    }
-    render();
-
-    // 4) Formular-Handling
-    document.getElementById('scoreForm').onsubmit = e => {
-      e.preventDefault();
-      const name = document.getElementById('playerName').value.trim() || '-';
-      const time = timeInput.value.trim();
-      if (!time) return;  // Zeit Pflicht
-      scores.push({ name, time });
-      localStorage.setItem('duelken_scores', JSON.stringify(scores));
-      render();
-      // Formular zurücksetzen aber Zeit behalten
-      document.getElementById('playerName').value = '';
-    };
-  })();
-  </script>
-
-</body>
-</html>
+<html lang="de"><head><meta charset="UTF-8"><title>🎁 Finale</title><style>
+body{background:#f1f8e9;font-family:'Comic Sans MS',sans-serif;max-width:600px;margin:2rem auto;padding:1rem;color:#33691e;}
+h1{text-align:center;color:#558b2f;font-size:2rem;}
+p,#timeDisplay{font-size:1.2rem;margin-top:0.5rem;}
+form,input,button{width:100%;font-size:1.1rem;margin-top:0.5rem;border-radius:8px;}
+input{padding:0.8rem;border:2px solid #aed581;box-sizing:border-box;}
+button{padding:0.8rem;background:#aed581;color:white;border:none;cursor:pointer;}
+</style></head><body>
+<h1>🎁 Finale</h1><div id="timeDisplay">Deine Zeit: …</div>
+<form id="scoreForm"><input type="text" id="playerName" placeholder="Dein Name (optional)"><button type="submit">Eintragen</button></form>
+<script>
+let start= parseInt(localStorage.getItem('duelken_startTime'),10)||Date.now();
+let diff=Date.now()-start;
+let mins=Math.floor(diff/60000),sec=Math.floor((diff%60000)/1000);
+let t=mins+'m '+sec+'s';
+document.getElementById('timeDisplay').textContent='Deine Zeit: '+t;
+let scores=JSON.parse(localStorage.getItem('duelken_scores')||'[]');
+document.getElementById('scoreForm').onsubmit=e=>{e.preventDefault();let n=document.getElementById('playerName').value.trim()||'-';scores.push({name:n,time:t});localStorage.setItem('duelken_scores',JSON.stringify(scores));alert('Danke!');};
+</script>
+</body></html>

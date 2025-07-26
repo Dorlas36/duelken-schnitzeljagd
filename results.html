@@ -1,103 +1,35 @@
 <!DOCTYPE html>
-<html lang="de">
-<head>
-  <meta charset="UTF-8">
-  <title>📋 Schnitzeljagd Ergebnisse</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      max-width: 800px;
-      margin: 2rem auto;
-      padding: 1rem;
-      color: #333;
-      background: #f9fbe7;
-    }
-    h2 {
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
-      color: #33691e;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 1rem;
-    }
-    th, td {
-      border: 1px solid #ccc;
-      padding: 0.5rem;
-      text-align: left;
-    }
-    th {
-      background: #c5e1a5;
-    }
-    button {
-      padding: 0.5rem 1rem;
-      font-size: 0.9rem;
-      cursor: pointer;
-      border: none;
-      border-radius: 4px;
-      margin-right: 0.5rem;
-    }
-    .delBtn {
-      background: #e53935;
-      color: white;
-    }
-  </style>
-</head>
-<body>
-
-  <h2>📋 Schnitzeljagd Ergebnisse</h2>
-
-  <table id="resultsTable">
-    <thead>
-      <tr><th>Name</th><th>Zeit</th><th>Aktion</th></tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-
-  <script>
-    // Admin-Passwort (bitte ändern)
-    const adminPass = 'DEIN_PASSWORT';
-
-    // Scores aus localStorage laden
-    let scores = JSON.parse(localStorage.getItem('duelken_scores') || '[]');
-    const tbody = document.querySelector('#resultsTable tbody');
-
-    // Tabelle rendern
-    function render() {
-      tbody.innerHTML = '';
-      scores.forEach((e, i) => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td>${e.name}</td>
-          <td>${e.time}</td>
-          <td><button class="delBtn" data-index="${i}">Löschen</button></td>
-        `;
-        tbody.appendChild(tr);
-      });
-      attachDelete();
-    }
-
-    // Delete-Buttons mit Passwort-Abfrage
-    function attachDelete() {
-      tbody.querySelectorAll('.delBtn').forEach(btn => {
-        btn.onclick = () => {
-          const pw = prompt('Admin-Passwort eingeben:');
-          if (pw === adminPass) {
-            const idx = parseInt(btn.dataset.index, 10);
-            scores.splice(idx, 1);
-            localStorage.setItem('duelken_scores', JSON.stringify(scores));
-            render();
-          } else {
-            alert('Keine Berechtigung zum Löschen');
-          }
-        };
-      });
-    }
-
-    // Initial render
-    render();
-  </script>
-
-</body>
-</html>
+<html lang="de"><head><meta charset="UTF-8"><title>📋 Ergebnisse</title><style>
+body{background:#fff8e1;font-family:'Comic Sans MS',sans-serif;max-width:800px;margin:2rem auto;padding:1rem;color:#5d4037;}
+h1{text-align:center;color:#bf360c;font-size:2rem;margin-bottom:1rem;}
+table{width:100%;border-collapse:collapse;margin-bottom:1rem;}
+th,td{border:2px dashed #bf360c;padding:0.5rem;text-align:left;}
+th{background:#ffe0b2;}
+button{display:none;}
+#adminBtn{width:100%;padding:0.8rem;background:#558b2f;color:white;border:none;border-radius:8px;cursor:pointer;margin-bottom:0.5rem;}
+</style></head><body>
+<h1>📋 Ergebnisse</h1><button id="adminBtn">Admin: Einträge verwalten</button>
+<table><thead><tr><th>Name</th><th>Zeit</th><th>Aktion</th></tr></thead><tbody id="results"></tbody></table>
+<script>
+const scores=JSON.parse(localStorage.getItem('duelken_scores')||'[]');
+const tbody=document.getElementById('results');
+function render(admin=false){
+  tbody.innerHTML='';
+  scores.forEach((e,i)=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${e.name}</td><td>${e.time}</td><td>${admin?'<button data-index="'+i+'">Löschen</button>':''}</td>`;
+    tbody.appendChild(tr);
+  });
+  if(admin){
+    tbody.querySelectorAll('button').forEach(btn=>{
+      btn.onclick=()=>{scores.splice(btn.dataset.index,1);localStorage.setItem('duelken_scores',JSON.stringify(scores));render(true);};
+    });
+  }
+}
+document.getElementById('adminBtn').onclick=()=>{
+  const p=prompt('Passwort eingeben:');
+  if(p==='DEIN_PASSWORT'){render(true);} else {alert('Falsches Passwort!');}
+};
+render();
+</script>
+</body></html>

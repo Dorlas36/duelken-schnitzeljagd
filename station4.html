@@ -1,69 +1,23 @@
 <!DOCTYPE html>
-<html lang="de">
-<head>
-  <meta charset="UTF-8">
-  <title>🔢 Rätsel 5 – Station 4: Brücke an der Nette</title>
-  <style>
-    body { font-family: Arial, sans-serif; max-width: 640px; margin: 2rem auto; padding: 1rem; color: #333; }
-    h2 { font-size: 1.5rem; margin-bottom: 0.5rem; }
-    p { margin: 0.5rem 0; }
-    input, button { width: 100%; box-sizing: border-box; font-size: 1rem; padding: 0.6rem; margin-top: 0.5rem; }
-    button { cursor: pointer; background: #007ACC; color: #fff; border: none; border-radius: 4px; }
-    #hintBtn { background: #555; }
-    #feedback { color: crimson; margin-top: 0.5rem; }
-    #hints { margin-top: 1rem; background: #f0f8ff; padding: 1rem; border-radius: 4px; display: none; }
-    #solutionBtn { display: none; background: #28a745; margin-top: 0.5rem; }
-  </style>
-</head>
-<body>
-
-  <h2>🔢 Rätsel 5 – Station 4: Brücke an der Nette</h2>
-  <p><strong>Aufgabe:</strong><br>
-     Finde ein Graffiti am Geländer und notiere den ersten Buchstaben.</p>
-
-  <input id="answer" type="text" placeholder="Dein Buchstabe">
-  <button id="check">Antwort prüfen</button>
-  <button id="hintBtn">Nächster Tipp</button>
-  <div id="feedback"></div>
-
-  <div id="hints"></div>
-  <button id="solutionBtn">Lösung anzeigen</button>
-
-  <script>
-    const tips = [
-      "Der erste Buchstabe entspricht dem Anfang des Flussnamens.",
-      "Schau direkt am Brückengeländer nach.",
-      "Es ist derselbe Anfangsbuchstabe wie in 'Nette'."
-    ];
-    let tipIndex = 0;
-
-    document.getElementById('check').onclick = () => {
-      const ans = document.getElementById('answer').value.trim().toLowerCase();
-      if (ans === 'n') {
-        window.location.href = 'final.html';
-      } else {
-        document.getElementById('feedback').textContent = 'Leider falsch – versuche es noch einmal!';
-      }
-    };
-
-    document.getElementById('hintBtn').onclick = () => {
-      if (tipIndex < tips.length) {
-        const div = document.getElementById('hints');
-        div.style.display = 'block';
-        const p = document.createElement('p');
-        p.textContent = `🔍 Tipp ${tipIndex+1}: ${tips[tipIndex]}`;
-        div.appendChild(p);
-        tipIndex++;
-        if (tipIndex === tips.length) {
-          document.getElementById('solutionBtn').style.display = 'block';
-        }
-      }
-    };
-
-    document.getElementById('solutionBtn').onclick = () => {
-      alert('➡️ Lösung: N');
-    };
-  </script>
-
-</body>
-</html>
+<html lang="de"><head><meta charset="UTF-8"><title>🔢 Rätsel 5 – Brücke an der Nette</title><style>
+body{background:#e0f7fa;font-family:'Comic Sans MS',sans-serif;max-width:600px;margin:2rem auto;padding:1rem;color:#006064;}
+h1{text-align:center;color:#00838f;font-size:2.25rem;}
+p{font-size:1.2rem;margin:0.5rem 0;}
+input,button{width:100%;padding:0.8rem;margin:0.5rem 0;font-size:1.1rem;border-radius:8px;}
+input{border:3px dashed #4dd0e1;}
+button{background:#4dd0e1;color:white;border:none;cursor:pointer;}
+button:hover{background:#26c6da;}
+#hintBtn{background:#fff59d;border:2px solid #fdd835;color:#3e2723;}
+#hints p{background:#b2ebf2;padding:0.5rem;border-radius:6px;margin-top:0.3rem;}
+#feedback{color:#d32f2f;font-weight:bold;margin-top:0.5rem;}
+</style></head><body>
+<h1>🔢 Rätsel 5</h1><p><strong>Aufgabe:</strong> Finde am Geländer ein Graffiti und notiere den ersten Buchstaben.</p>
+<input id="answer" placeholder="Dein Buchstabe"><button id="check">Antwort prüfen</button><button id="hintBtn">Nächster Tipp</button>
+<div id="feedback"></div><div id="hints" style="display:none;"></div>
+<script>
+const tips4=["Schau am Geländer.","Konsonant.","Anfang von 'Nette'."];
+let m=0;
+document.getElementById('check').onclick=()=>{if(document.getElementById('answer').value.trim().toLowerCase()==='n')location.href='final.html';else document.getElementById('feedback').textContent='Nochmals!';};
+document.getElementById('hintBtn').onclick=()=>{if(m<tips4.length){let d=document.getElementById('hints');d.style.display='block';let p=document.createElement('p');p.textContent='🔍 Tipp '+(m+1)+': '+tips4[m++];d.appendChild(p);} };
+</script>
+</body></html>
