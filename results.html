@@ -30,27 +30,24 @@
     th {
       background: #c5e1a5;
     }
-    .action {
-      display: none; /* Lösch-Buttons versteckt */
-    }
-    .admin-mode .action {
-      display: inline-block; /* Nur im Admin-Modus angezeigt */
-    }
     button {
       padding: 0.5rem 1rem;
-      font-size: 1rem;
+      font-size: 0.9rem;
       cursor: pointer;
       border: none;
       border-radius: 4px;
       margin-right: 0.5rem;
     }
-    .delBtn { background: #e53935; color: white; }
-    #adminToggle { background: #8bc34a; color: white; display: block; margin-bottom: 1rem; }
+    .delBtn {
+      background: #e53935;
+      color: white;
+    }
   </style>
 </head>
 <body>
+
   <h2>📋 Schnitzeljagd Ergebnisse</h2>
-  <button id="adminToggle">Admin-Modus aktivieren</button>
+
   <table id="resultsTable">
     <thead>
       <tr><th>Name</th><th>Zeit</th><th>Aktion</th></tr>
@@ -59,63 +56,48 @@
   </table>
 
   <script>
-    // Passwort für Admin
-    const adminPassword = 'admin123';
-    let isAdmin = false;
+    // Admin-Passwort (bitte ändern)
+    const adminPass = 'DEIN_PASSWORT';
 
-    // Scores laden
+    // Scores aus localStorage laden
     let scores = JSON.parse(localStorage.getItem('duelken_scores') || '[]');
     const tbody = document.querySelector('#resultsTable tbody');
-    const btnAdmin = document.getElementById('adminToggle');
 
-    // Rendering der Tabelle
+    // Tabelle rendern
     function render() {
-      document.body.classList.toggle('admin-mode', isAdmin);
       tbody.innerHTML = '';
       scores.forEach((e, i) => {
         const tr = document.createElement('tr');
         tr.innerHTML = `
           <td>${e.name}</td>
           <td>${e.time}</td>
-          <td><button class="delBtn action" data-index="${i}">Löschen</button></td>
+          <td><button class="delBtn" data-index="${i}">Löschen</button></td>
         `;
         tbody.appendChild(tr);
       });
       attachDelete();
     }
 
-    // Löschen nur im Admin-Modus
+    // Delete-Buttons mit Passwort-Abfrage
     function attachDelete() {
       tbody.querySelectorAll('.delBtn').forEach(btn => {
         btn.onclick = () => {
-          if (!isAdmin) return;
-          const idx = parseInt(btn.dataset.index);
-          scores.splice(idx, 1);
-          localStorage.setItem('duelken_scores', JSON.stringify(scores));
-          render();
+          const pw = prompt('Admin-Passwort eingeben:');
+          if (pw === adminPass) {
+            const idx = parseInt(btn.dataset.index, 10);
+            scores.splice(idx, 1);
+            localStorage.setItem('duelken_scores', JSON.stringify(scores));
+            render();
+          } else {
+            alert('Keine Berechtigung zum Löschen');
+          }
         };
       });
     }
 
-    // Admin-Modus umschalten
-    btnAdmin.onclick = () => {
-      if (!isAdmin) {
-        const pw = prompt('Admin-Passwort eingeben:');
-        if (pw === adminPassword) {
-          isAdmin = true;
-          btnAdmin.textContent = 'Admin-Modus deaktivieren';
-        } else {
-          alert('Falsches Passwort.');
-        }
-      } else {
-        isAdmin = false;
-        btnAdmin.textContent = 'Admin-Modus aktivieren';
-      }
-      render();
-    };
-
-    // Initialisierung
+    // Initial render
     render();
   </script>
+
 </body>
 </html>
