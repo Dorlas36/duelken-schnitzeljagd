@@ -3,37 +3,42 @@
 <head>
   <meta charset="UTF-8">
   <title>Rätsel-Start</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      max-width: 600px;
+      margin: 2rem auto;
+      padding: 1rem;
+    }
+    button {
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      margin: 0.5rem;
+    }
+  </style>
 </head>
 <body>
   <h2>🔒 Halt, Rätselstarter!</h2>
-  <p>Bevor du weitermachen darfst, musst du den Startpunkt finden.</p>
-  <h3>Rätsel:</h3>
-  <p>
-    Ich bin ein Ort mit einem Brunnen und umgeben von alten Fassaden.<br>
-    Ich sah schon viele Jecken kommen und gehen,<br>
-    hier beginnt die Spurensuche – kannst du ihn erkennen?
-  </p>
-  <p><strong>Lösung:</strong> Gehe zum <em>Alter Markt</em> und scanne dort den ersten QR-Code.</p>
-  <button id="goStart">Zum Start</button>
-  <script>
-    const params = new URLSearchParams(window.location.search);
-    const dest = params.get('dest');
-    const started = localStorage.getItem('duelken_started');
+  <p>Du hast eine Station gescannt, ohne das Rätsel von vorn begonnen zu haben.</p>
+  <p><strong>Was möchtest du tun?</strong></p>
+  <button id="start">Zum Anfang (Rätsel von vorn lösen)</button>
+  <button id="skip">Direkt zur gescannten Station</button>
 
-    // If scanning intro, set started and go
-    if (dest === 'intro.html') {
+  <script>
+    // Welcher Ziel-Seite soll gefolgt werden?
+    const params = new URLSearchParams(window.location.search);
+    const dest = params.get('dest') || 'intro.html';
+
+    document.getElementById('start').onclick = () => {
+      // Flag setzen und zurück zum Intro
       localStorage.setItem('duelken_started', 'true');
       window.location.href = 'intro.html';
-    } else if (started) {
-      // Already started: go directly to destination
+    };
+    document.getElementById('skip').onclick = () => {
+      // Flag setzen und direkt zum Ziel
+      localStorage.setItem('duelken_started', 'true');
       window.location.href = dest;
-    } else {
-      // Not started: show riddle page until clicking button
-      document.getElementById('goStart').addEventListener('click', () => {
-        localStorage.setItem('duelken_started', 'true');
-        window.location.href = 'intro.html';
-      });
-    }
+    };
   </script>
 </body>
 </html>
