@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>🔢 Rätsel 0 – Intro: Alter Markt</title>
+  <title>🔢 Rätsel 0 – Intro: Alter Markt</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -23,27 +23,38 @@
       width: 100%;
       padding: 0.6rem;
       font-size: 1rem;
-      margin-top: 1rem;
+      margin: 0.5rem 0;
       border: none;
       border-radius: 4px;
       cursor: pointer;
-      background: #007ACC;
       color: #fff;
     }
-    em {
-      color: #555;
-      display: block;
-      margin-top: 1rem;
-    }
+    #timerYes { background: #28a745; }
+    #timerNo { background: #dc3545; }
   </style>
 </head>
 <body>
-  <h2>🔢 Rätsel 0 – Intro: Alter Markt</h2>
+  <h2>🔢 Rätsel 0 – Intro: Alter Markt</h2>
   <p><strong>Hier beginnt dein Abenteuer!</strong><br>
-     Du stehst am Alter Markt, dem offiziellen Startpunkt mit dem Brunnen und den alten Fassaden.</p>
-  <em>Der Timer startet automatisch, sobald du zum ersten Rätsel weitergehst.</em>
-  <button onclick="window.location.href='start.html'">
-    Zum ersten Rätsel
-  </button>
+     Du stehst am Alter Markt, dem offiziellen Startpunkt mit dem Brunnen und den alten Fassaden.</p>
+  <p><strong>Timer-Option:</strong><br>
+     Möchtest du einen Timer aktivieren, um deine Gesamtzeit zu messen? (freiwillig)</p>
+  <button id="timerYes">Ja, Timer aktivieren</button>
+  <button id="timerNo">Nein, ohne Timer starten</button>
+
+  <script>
+    document.getElementById('timerYes').onclick = () => {
+      localStorage.setItem('duelken_startTime', Date.now());
+      localStorage.setItem('duelken_timerEnabled', 'true');
+      localStorage.setItem('duelken_started', 'true');
+      window.location.href = 'start.html';
+    };
+    document.getElementById('timerNo').onclick = () => {
+      localStorage.removeItem('duelken_startTime');
+      localStorage.setItem('duelken_timerEnabled', 'false');
+      localStorage.setItem('duelken_started', 'true');
+      window.location.href = 'start.html';
+    };
+  </script>
 </body>
 </html>
