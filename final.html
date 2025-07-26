@@ -3,10 +3,66 @@
 <head>
   <meta charset="UTF-8">
   <title>🔢 Rätsel 6 – Finale: Spielplatz Schirickstraße</title>
-  <style>body{font-family:Arial,max-width:640px;margin:2rem auto;padding:1rem;color:#333;}h2{font-size:1.5rem;}</style>
+  <style>
+    body { font-family: Arial, sans-serif; max-width:640px; margin:2rem auto; padding:1rem; color:#333; }
+    h2 { font-size:1.5rem; margin-bottom:.5rem; }
+    form, table { width:100%; margin-top:1rem; }
+    input, button { width:100%; padding:.6rem; font-size:1rem; margin-top:.5rem; box-sizing:border-box; }
+    table { border-collapse: collapse; margin-top:1rem; }
+    th, td { border:1px solid #ccc; padding:.5rem; text-align:left; }
+  </style>
 </head>
 <body>
   <h2>🔢 Rätsel 6 – Finale: Spielplatz Schirickstraße</h2>
-  <p>Glückwunsch! Du hast alle Rätsel gemeistert. Genieße deine Belohnung!</p>
+  <p>Herzlichen Glückwunsch! Du hast alle Rätsel gemeistert.</p>
+
+  <script>
+    const start = parseInt(localStorage.getItem('duelken_startTime'), 10);
+    const end = Date.now();
+    const diffMs = end - start;
+    const minutes = Math.floor(diffMs / 60000);
+    const seconds = Math.floor((diffMs % 60000) / 1000);
+    const timeStr = `${minutes}m ${seconds}s`;
+    document.write(`<p>Deine Zeit: <strong>${timeStr}</strong></p>`);
+    document.getElementById('playerTime')?.setAttribute('value', timeStr);
+  </script>
+
+  <form id="scoreForm">
+    <label>
+      Dein Name (optional):
+      <input type="text" id="playerName" placeholder="Pseudonym oder Name">
+    </label>
+    <input type="hidden" id="playerTime" value="">
+    <button type="submit">Eintragen</button>
+  </form>
+
+  <table id="resultsTable">
+    <thead><tr><th>Name</th><th>Zeit</th></tr></thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    const form = document.getElementById('scoreForm');
+    const tbody = document.querySelector('#resultsTable tbody');
+    const timeStr = document.getElementById('playerTime').value;
+    let scores = JSON.parse(localStorage.getItem('duelken_scores')||'[]');
+    function render() {
+      tbody.innerHTML = '';
+      scores.forEach(e => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${e.name}</td><td>${e.time}</td>`;
+        tbody.appendChild(tr);
+      });
+    }
+    render();
+    form.onsubmit = e => {
+      e.preventDefault();
+      const name = document.getElementById('playerName').value.trim() || '-';
+      scores.push({ name, time: timeStr });
+      localStorage.setItem('duelken_scores', JSON.stringify(scores));
+      render();
+      form.reset();
+    };
+  </script>
 </body>
 </html>
