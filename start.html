@@ -2,91 +2,74 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>🔢 Rätsel 1 – Alter Markt</title>
+  <title>🔢 Rätsel 1 – Alter Markt → Narrenmühle</title>
   <style>
     body {
-      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-family: Arial, sans-serif;
       max-width: 640px;
-      margin: 2rem auto;
-      padding: 1rem;
-      line-height: 1.5;
-      color: #333;
+      margin: 2rem auto; padding: 1rem; color: #333;
     }
-    h2 {
-      font-size: 1.5rem;
-      margin-bottom: 0.5rem;
-    }
-    p {
-      margin: 0.5rem 0;
-    }
+    h2 { font-size: 1.5rem; margin-bottom: .5rem; }
+    p { margin: .5rem 0; }
     input, button {
-      font-size: 1rem;
-      padding: 0.6rem;
-      margin-top: 0.5rem;
-      width: 100%;
-      box-sizing: border-box;
+      width: 100%; box-sizing: border-box;
+      font-size: 1rem; padding: .6rem; margin-top: .5rem;
     }
-    button {
-      cursor: pointer;
-      background: #007ACC;
-      color: white;
-      border: none;
-      border-radius: 4px;
-    }
-    #feedback {
-      margin-top: 0.5rem;
-      color: crimson;
-    }
-    #hints {
-      display: none;
-      margin-top: 1rem;
-      padding: 1rem;
-      background: #f0f8ff;
-      border-radius: 4px;
-    }
-    #hints ul {
-      margin: 0.5rem 0 0 1rem;
-    }
-    #solution {
-      margin-top: 0.8rem;
-      font-weight: bold;
-    }
+    button { cursor: pointer; background: #007ACC; color: #fff; border: none; border-radius: 4px; }
+    #hintBtn { background: #555; }
+    #feedback { color: crimson; margin-top: .5rem; }
+    #hints { margin-top: 1rem; background: #f0f8ff; padding: 1rem; border-radius: 4px; }
+    #solutionBtn { display: none; background: #28a745; margin-top: .5rem; }
   </style>
 </head>
 <body>
-  <h2>🔢 Rätsel 1 – Alter Markt</h2>
-  <p><strong>Willkommen am offiziellen Startpunkt!</strong><br>
-     Deine erste Aufgabe führt dich weiter zur Narrenmühle.</p>
-  <p><strong>Deine Mission:</strong><br>
-     Wie heißt das nächste Örtchen, das untrennbar mit Dülken und seinem Karneval verbunden ist?</p>
 
-  <input id="answer" type="text" placeholder="Antwort hier eingeben">
-  <button id="check">Los geht’s!</button>
-  <button id="showHints" style="background:#555;margin-top:0.3rem;">Tipps anzeigen</button>
+  <h2>🔢 Rätsel 1 – Alter Markt → Narrenmühle</h2>
+  <p><strong>Dein nächstes Ziel</strong> liegt nicht hier, sondern dort, wo sich Narren und Wind vereinen.</p>
+  <p><strong>Aufgabe:</strong> Gib den Namen dieses Ortes ein.</p>
+
+  <input id="answer" type="text" placeholder="z. B. Narrenmühle">
+  <button id="check">Antwort prüfen</button>
+  <button id="hintBtn">Nächster Tipp</button>
   <div id="feedback"></div>
 
-  <div id="hints">
-    <p><strong>🔍 Drei Tipps:</strong></p>
-    <ul>
-      <li>Dieses Wahrzeichen dreht sich, wenn man es ließe.</li>
-      <li>Es wird bei jeder Karnevalssession gefeiert.</li>
-      <li>Im Namen steckt das Wort „Mühle“.</li>
-    </ul>
-    <div id="solution">➡️ Lösung: Narrenmühle</div>
-  </div>
+  <div id="hints"></div>
+  <button id="solutionBtn">Lösung anzeigen</button>
 
   <script>
+    const tips = [
+      "Stell dir eine Mühle vor – aber statt Korn mahlt sie Frohsinn.",
+      "Hier treffen sich während der Session alle Narren zum Feiern.",
+      "Der Name kombiniert „Narren“ mit einem Bauwerk, das normalerweise mahlt."
+    ];
+    let tipIndex = 0;
+
     document.getElementById('check').onclick = () => {
       const ans = document.getElementById('answer').value.trim().toLowerCase();
       if (ans === 'narrenmühle' || ans === 'narrenmuehle') {
         window.location.href = 'station1.html';
       } else {
-        document.getElementById('feedback').textContent = 'Hm, das passt noch nicht. Versuch’s nochmal!';
+        document.getElementById('feedback').textContent = 'Leider falsch – versuche es noch einmal!';
       }
     };
-    document.getElementById('showHints').onclick = () => {
-      document.getElementById('hints').style.display = 'block';
+
+    document.getElementById('hintBtn').onclick = () => {
+      if (tipIndex < tips.length) {
+        // Anzeige des nächsten Tipps
+        const div = document.getElementById('hints');
+        div.innerHTML += `<p>🔍 Tipp ${tipIndex+1}: ${tips[tipIndex]}</p>`;
+        tipIndex++;
+        // Nach dem 3. Tipp: Lösungsknopf einblenden
+        if (tipIndex === tips.length) {
+          document.getElementById('solutionBtn').style.display = 'block';
+        }
+      }
+    };
+
+    document.getElementById('solutionBtn').onclick = () => {
+      alert('➡️ Lösung: Narrenmühle');
     };
   </script>
+
 </body>
 </html>
