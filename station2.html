@@ -1,8 +1,83 @@
 <!DOCTYPE html>
-<html>
-<head><meta charset="UTF-8"><title>Station 2: St. Cornelius Kirche</title></head>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>🔢 Rätsel 3 – Station 2: St. Cornelius Kirche</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 640px;
+      margin: 2rem auto;
+      padding: 1rem;
+      color: #333;
+    }
+    h2 { font-size: 1.5rem; margin-bottom: .5rem; }
+    p { margin: .5rem 0; }
+    input, button {
+      width: 100%;
+      box-sizing: border-box;
+      font-size: 1rem;
+      padding: .6rem;
+      margin-top: .5rem;
+    }
+    button {
+      cursor: pointer;
+      background: #007ACC;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+    }
+    #hintBtn { background: #555; }
+    #feedback { color: crimson; margin-top: .5rem; }
+    #hints {
+      margin-top: 1rem;
+      background: #f0f8ff;
+      padding: 1rem;
+      border-radius: 4px;
+    }
+    #solutionBtn {
+      display: none;
+      background: #28a745;
+      margin-top: .5rem;
+    }
+  </style>
+</head>
 <body>
-<h2>⛪ Station 2: St. Cornelius Kirche</h2>
-<p>Wie viele römische Zahlen siehst du auf der Turmuhr? Addiere sie.</p>
-</body>
-</html>
+
+  <h2>🔢 Rätsel 3 – Station 2: St. Cornelius Kirche</h2>
+  <p><strong>Aufgabe:</strong><br>
+     Addiere alle römischen Zahlen von I bis XII auf der Kirchturmuhr.</p>
+
+  <input id="answer" type="number" placeholder="Deine Lösung">
+  <button id="check">Antwort prüfen</button>
+  <button id="hintBtn">Nächster Tipp</button>
+  <div id="feedback"></div>
+
+  <div id="hints"></div>
+  <button id="solutionBtn">Lösung anzeigen</button>
+
+  <script>
+    const tips = [
+      "Zähle jede einzelne römische Ziffer von I bis XII.",
+      "I entspricht 1, V entspricht 5, X entspricht 10.",
+      "Addiere am Ende auch die XII (12) mit dazu."
+    ];
+    let tipIndex = 0;
+
+    document.getElementById('check').onclick = () => {
+      const ans = document.getElementById('answer').value.trim();
+      if (ans === '78') {
+        window.location.href = 'station3.html';
+      } else {
+        document.getElementById('feedback').textContent = 'Leider falsch – versuch’s nochmal!';
+      }
+    };
+
+    document.getElementById('hintBtn').onclick = () => {
+      if (tipIndex < tips.length) {
+        const div = document.getElementById('hints');
+        div.innerHTML += `<p>🔍 Tipp ${tipIndex+1}: ${tips[tipIndex]}</p>`;
+        tipIndex++;
+        if (tipIndex === tips.length) {
+          document.getElementById('solutionBtn').style.display = 'block';
+        }
