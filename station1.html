@@ -1,34 +1,31 @@
 <!DOCTYPE html>
-<html>
+<html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>Station 1: Narrenmühle</title>
+  <title>🔢 Rätsel 2 – Fensterzählung</title>
   <style>
-    body { font-family: sans-serif; max-width: 600px; margin: 2rem auto; padding: 1rem; }
-    input, button { font-size: 1rem; padding: 0.5rem; margin-top: 1rem; }
-    #feedback { margin-top: 1rem; color: red; }
+    body { background:#e3f2fd; font-family:'Comic Sans MS',sans-serif; max-width:600px; margin:2rem auto; padding:1rem; }
+    h1 { color:#1976d2; text-align:center; font-size:2rem; }
+    p { font-size:1.2rem; color:#0d47a1; }
+    input, button { width:100%; padding:0.8rem; font-size:1.1rem; margin:0.5rem 0; border-radius:8px; border:2px solid #42a5f5; }
+    button { background:#42a5f5; color:white; cursor:pointer; }
+    #hintBtn { background:#fff176; border-color:#fdd835; }
+    #hints p { background:#ffff8d; padding:0.5rem; border-radius:6px; }
   </style>
 </head>
 <body>
-  <h2>🏰 Station 1: Narrenmühle</h2>
-  <p><strong>Aufgabe:</strong><br>
-     Zähle die Fenster der Narrenmühle und multipliziere die Zahl mit 3.</p>
-
-  <!-- Hier trägst du die 12 ein -->
-  <input type="number" id="answer" placeholder="Deine Lösung">
+  <h1>🔢 Rätsel 2 – Fensterzählung</h1>
+  <p><strong>Aufgabe:</strong> Zähle die Fenster und multipliziere mit 3.</p>
+  <input id="answer" type="number" placeholder="Deine Zahl">
   <button id="check">Antwort prüfen</button>
-  <div id="feedback"></div>
-
-  <script>
-    document.getElementById('check').onclick = function() {
-      const ans = document.getElementById('answer').value.trim();
-      if (ans === '12') {
-        // Weiterleitung zur Station 2
-        window.location.href = 'station2.html';
-      } else {
-        document.getElementById('feedback').innerText = 'Leider falsch – versuche es noch einmal.';
-      }
-    };
-  </script>
+  <button id="hintBtn">Nächster Tipp</button>
+  <div id="feedback" style="color:#d32f2f;"></div>
+  <div id="hints" style="display:none;"></div>
+<script>
+const tips1=["Nur Fenster am Sockel zählen.","Auf allen vier Seiten gleich viele.","Ergebnis mit 3 multiplizieren."];
+let j=0;
+document.getElementById('check').onclick=()=>{if(document.getElementById('answer').value.trim()==='12')location.href='station2.html';else document.getElementById('feedback').textContent='Leider falsch.';};
+document.getElementById('hintBtn').onclick=()=>{if(j<tips1.length){let d=document.getElementById('hints');d.style.display='block';let p=document.createElement('p');p.textContent='🔍 Tipp '+(j+1)+': '+tips1[j++];d.appendChild(p);}};
+</script>
 </body>
 </html>

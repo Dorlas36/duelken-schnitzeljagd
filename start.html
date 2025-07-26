@@ -2,74 +2,45 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>🔢 Rätsel 1 – Alter Markt</title>
+  <title>🔢 Rätsel 1 – Narrenmühle</title>
   <style>
-    body { font-family: Arial, sans-serif; max-width:640px; margin:2rem auto; padding:1rem; color:#333; }
-    h2 { font-size:1.5rem; margin-bottom:.5rem; }
-    p { margin:.5rem 0; }
-    input, button { width:100%; box-sizing:border-box; font-size:1rem; padding:.6rem; margin-top:.5rem; }
-    button { cursor:pointer; background:#007ACC; color:#fff; border:none; border-radius:4px; }
-    #hintBtn { background:#555; }
-    #feedback { color:crimson; margin-top:.5rem; }
-    #hints { margin-top:1rem; background:#f0f8ff; padding:1rem; border-radius:4px; display:none; }
-    #solutionBtn { display:none; background:#28a745; margin-top:.5rem; }
+    body { background:#e8f5e9; font-family:'Comic Sans MS',sans-serif; max-width:600px; margin:2rem auto; padding:1rem; }
+    h1 { color:#2e7d32; text-align:center; font-size:2rem; }
+    p { font-size:1.2rem; color:#1b5e20; }
+    input, button { width:100%; padding:0.8rem; font-size:1.1rem; margin:0.5rem 0; border-radius:8px; border:2px solid #66bb6a; }
+    button { background:#66bb6a; color:white; cursor:pointer; }
+    button:hover { background:#81c784; }
+    #hintBtn { background:#ffeb3b; border-color:#fdd835; }
+    #hints p { background:#fffde7; padding:0.5rem; border-radius:6px; }
   </style>
 </head>
 <body>
-  <script>
-    // Timer automatisch starten, wenn noch nicht gesetzt
-    if (!localStorage.getItem('duelken_startTime')) {
-      localStorage.setItem('duelken_startTime', Date.now());
-    }
-  </script>
-
-  <h2>🔢 Rätsel 1 – Alter Markt</h2>
-  <p><strong>Willkommen am Brunnen des Alter Markts!</strong></p>
-  <p><strong>Aufgabe:</strong><br>
-     Finde den Namen des nächsten Wahrzeichens in Dülken.</p>
-
-  <input id="answer" type="text" placeholder="Antwort hier eintippen">
+  <h1>🔢 Rätsel 1 – Narrenmühle</h1>
+  <p><strong>Aufgabe:</strong> Wie heißt das bunte Karnevals-Wahrzeichen mit den Flügeln?</p>
+  <input id="answer" placeholder="Deine Antwort hier">
   <button id="check">Antwort prüfen</button>
   <button id="hintBtn">Nächster Tipp</button>
-  <div id="feedback"></div>
-
-  <div id="hints"></div>
-  <button id="solutionBtn">Lösung anzeigen</button>
-
-  <script>
-    const tips = [
-      "Dieses Bauwerk hat Flügel, die sich im Wind drehen könnten.",
-      "Es ist jedes Jahr Zentrum kleiner Jecken-Runden.",
-      "Sein Name endet auf ‚-mühle‘."
-    ];
-    let tipIndex = 0;
-
-    document.getElementById('check').onclick = () => {
-      const ans = document.getElementById('answer').value.trim().toLowerCase();
-      if (ans === 'narrenmühle' || ans === 'narrenmuehle') {
-        window.location.href = 'station1.html';
-      } else {
-        document.getElementById('feedback').textContent = 'Leider falsch – probier’s nochmal!';
-      }
-    };
-
-    document.getElementById('hintBtn').onclick = () => {
-      if (tipIndex < tips.length) {
-        const div = document.getElementById('hints');
-        div.style.display = 'block';
-        const p = document.createElement('p');
-        p.textContent = `🔍 Tipp ${tipIndex+1}: ${tips[tipIndex]}`;
-        div.appendChild(p);
-        tipIndex++;
-        if (tipIndex === tips.length) {
-          document.getElementById('solutionBtn').style.display = 'block';
-        }
-      }
-    };
-
-    document.getElementById('solutionBtn').onclick = () => {
-      alert('➡️ Lösung: Narrenmühle');
-    };
-  </script>
+  <div id="feedback" style="color:#d32f2f;"></div>
+  <div id="hints" style="display:none;"></div>
+<script>
+const tips = [
+  "Es mahlt nicht Korn, sondern Frohsinn!",
+  "Alle Jecken tanzen dort umher.",
+  "Im Namen steht das Wort 'Mühle'."
+];
+let i=0;
+document.getElementById('check').onclick = () => {
+  let ans=document.getElementById('answer').value.trim().toLowerCase();
+  if(ans==='narrenmühle'||ans==='narrenmuehle') location.href='station1.html';
+  else document.getElementById('feedback').textContent='Ups, das passt nicht. Versuch’s nochmal!';
+};
+document.getElementById('hintBtn').onclick = () => {
+  if(i<tips.length){
+    let div=document.getElementById('hints'); div.style.display='block';
+    let p=document.createElement('p'); p.textContent='🔍 Tipp '+(i+1)+': '+tips[i++];
+    div.appendChild(p);
+  }
+};
+</script>
 </body>
 </html>
