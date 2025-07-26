@@ -1,48 +1,90 @@
 <!DOCTYPE html>
-<html>
+<html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>🔢 Rätsel 1 – Startpunkt: Alter Markt</title>
+  <title>🔢 Rätsel 1 – Alter Markt</title>
   <style>
-    body { font-family: sans-serif; max-width: 600px; margin: 2rem auto; padding: 1rem; }
-    input, button { font-size: 1rem; padding: 0.5rem; margin: 0.5rem 0; }
-    #feedback { color: red; margin-top: 0.5rem; }
-    #hints { display: none; margin-top: 1rem; background: #f9f9f9; padding: 1rem; border-radius: 5px; }
-    #hints ul { margin: 0; padding-left: 1.2rem; }
-    #solution { margin-top: 0.5rem; font-weight: bold; }
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      max-width: 640px;
+      margin: 2rem auto;
+      padding: 1rem;
+      line-height: 1.5;
+      color: #333;
+    }
+    h2 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    p {
+      margin: 0.5rem 0;
+    }
+    input, button {
+      font-size: 1rem;
+      padding: 0.6rem;
+      margin-top: 0.5rem;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    button {
+      cursor: pointer;
+      background: #007ACC;
+      color: white;
+      border: none;
+      border-radius: 4px;
+    }
+    #feedback {
+      margin-top: 0.5rem;
+      color: crimson;
+    }
+    #hints {
+      display: none;
+      margin-top: 1rem;
+      padding: 1rem;
+      background: #f0f8ff;
+      border-radius: 4px;
+    }
+    #hints ul {
+      margin: 0.5rem 0 0 1rem;
+    }
+    #solution {
+      margin-top: 0.8rem;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
-  <h2>🔢 Rätsel 1 – Startpunkt: Alter Markt</h2>
-  <p>Ab hier startet das spannende Rätsel durch Dülken:</p>
-  <p><strong>Aufgabe:</strong><br>
-     Finde heraus, wie die nächste Station heißt.</p>
+  <h2>🔢 Rätsel 1 – Alter Markt</h2>
+  <p><strong>Willkommen am offiziellen Startpunkt!</strong><br>
+     Deine erste Aufgabe führt dich weiter zur Narrenmühle.</p>
+  <p><strong>Deine Mission:</strong><br>
+     Wie heißt das nächste Örtchen, das untrennbar mit Dülken und seinem Karneval verbunden ist?</p>
 
-  <input id="answer" placeholder="Deine Lösung">
-  <button id="check">Antwort prüfen</button>
-  <button id="showHints">Tipps anzeigen</button>
+  <input id="answer" type="text" placeholder="Antwort hier eingeben">
+  <button id="check">Los geht’s!</button>
+  <button id="showHints" style="background:#555;margin-top:0.3rem;">Tipps anzeigen</button>
   <div id="feedback"></div>
 
   <div id="hints">
-    <p><strong>Tipps zur Lösung:</strong></p>
+    <p><strong>🔍 Drei Tipps:</strong></p>
     <ul>
-      <li>Dieser Ort ist untrennbar mit dem Dülkener Karneval verbunden.</li>
-      <li>Er besitzt ein markantes Zahnrad-ähnliches Bauwerk, das sich drehen würde.</li>
-      <li>Sein Name endet auf „-mühle“, doch hier mahlt kein Getreide.</li>
+      <li>Dieses Wahrzeichen dreht sich, wenn man es ließe.</li>
+      <li>Es wird bei jeder Karnevalssession gefeiert.</li>
+      <li>Im Namen steckt das Wort „Mühle“.</li>
     </ul>
-    <div id="solution">Lösung: Narrenmühle</div>
+    <div id="solution">➡️ Lösung: Narrenmühle</div>
   </div>
 
   <script>
-    document.getElementById('check').onclick = function() {
+    document.getElementById('check').onclick = () => {
       const ans = document.getElementById('answer').value.trim().toLowerCase();
       if (ans === 'narrenmühle' || ans === 'narrenmuehle') {
         window.location.href = 'station1.html';
       } else {
-        document.getElementById('feedback').innerText = 'Leider falsch – versuche es noch einmal.';
+        document.getElementById('feedback').textContent = 'Hm, das passt noch nicht. Versuch’s nochmal!';
       }
     };
-    document.getElementById('showHints').onclick = function() {
+    document.getElementById('showHints').onclick = () => {
       document.getElementById('hints').style.display = 'block';
     };
   </script>
