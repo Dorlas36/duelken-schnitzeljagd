@@ -17,14 +17,15 @@
   <p>Herzlichen Glückwunsch! Du hast alle Rätsel gemeistert.</p>
 
   <script>
-    const start = parseInt(localStorage.getItem('duelken_startTime'), 10);
+    // Berechnung der Zeit seit Start
+    const start = parseInt(localStorage.getItem('duelken_startTime'), 10) || Date.now();
     const end = Date.now();
     const diffMs = end - start;
     const minutes = Math.floor(diffMs / 60000);
     const seconds = Math.floor((diffMs % 60000) / 1000);
     const timeStr = `${minutes}m ${seconds}s`;
+    // Anzeige der Zeit
     document.write(`<p>Deine Zeit: <strong>${timeStr}</strong></p>`);
-    document.getElementById('playerTime')?.setAttribute('value', timeStr);
   </script>
 
   <form id="scoreForm">
@@ -32,20 +33,27 @@
       Dein Name (optional):
       <input type="text" id="playerName" placeholder="Pseudonym oder Name">
     </label>
-    <input type="hidden" id="playerTime" value="">
-    <button type="submit">Eintragen</button>
+    <label>
+      Deine Zeit (korrigieren optional):
+      <input type="text" id="playerTime" placeholder="z.B. 5m 30s">
+    </label>
+    <button type="submit">Eintragen (freiwillig)</button>
   </form>
 
   <table id="resultsTable">
-    <thead><tr><th>Name</th><th>Zeit</th></tr></thead>
+    <thead>
+      <tr><th>Name</th><th>Zeit</th></tr>
+    </thead>
     <tbody></tbody>
   </table>
 
   <script>
+    // Vorinitialisiere Zeitfeld
+    document.getElementById('playerTime').value = document.querySelector('strong').textContent;
     const form = document.getElementById('scoreForm');
     const tbody = document.querySelector('#resultsTable tbody');
-    const timeStr = document.getElementById('playerTime').value;
-    let scores = JSON.parse(localStorage.getItem('duelken_scores')||'[]');
+    let scores = JSON.parse(localStorage.getItem('duelken_scores') || '[]');
+
     function render() {
       tbody.innerHTML = '';
       scores.forEach(e => {
@@ -54,14 +62,20 @@
         tbody.appendChild(tr);
       });
     }
+
+    // Beim Laden bereits vorhandene Einträge zeigen
     render();
+
     form.onsubmit = e => {
       e.preventDefault();
       const name = document.getElementById('playerName').value.trim() || '-';
-      scores.push({ name, time: timeStr });
-      localStorage.setItem('duelken_scores', JSON.stringify(scores));
-      render();
-      form.reset();
+      const time = document.getElementById('playerTime').value.trim() || '';
+      if (time) {
+        scores.push({ name, time });
+        localStorage.setItem('duelken_scores', JSON.stringify(scores));
+        render();
+        form.reset();
+      }
     };
   </script>
 </body>
