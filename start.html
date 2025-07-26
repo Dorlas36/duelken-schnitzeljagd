@@ -2,33 +2,54 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>🔢 Rätsel 1 – Alter Markt → Narrenmühle</title>
+  <title>🔢 Rätsel 1 – Alter Markt</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       max-width: 640px;
-      margin: 2rem auto; padding: 1rem; color: #333;
+      margin: 2rem auto;
+      padding: 1rem;
+      color: #333;
     }
-    h2 { font-size: 1.5rem; margin-bottom: .5rem; }
-    p { margin: .5rem 0; }
+    h2 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+    p { margin: 0.5rem 0; }
     input, button {
-      width: 100%; box-sizing: border-box;
-      font-size: 1rem; padding: .6rem; margin-top: .5rem;
+      width: 100%;
+      box-sizing: border-box;
+      font-size: 1rem;
+      padding: 0.6rem;
+      margin-top: 0.5rem;
     }
-    button { cursor: pointer; background: #007ACC; color: #fff; border: none; border-radius: 4px; }
+    button {
+      cursor: pointer;
+      background: #007ACC;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+    }
     #hintBtn { background: #555; }
-    #feedback { color: crimson; margin-top: .5rem; }
-    #hints { margin-top: 1rem; background: #f0f8ff; padding: 1rem; border-radius: 4px; }
-    #solutionBtn { display: none; background: #28a745; margin-top: .5rem; }
+    #feedback { color: crimson; margin-top: 0.5rem; }
+    #hints {
+      margin-top: 1rem;
+      background: #f0f8ff;
+      padding: 1rem;
+      border-radius: 4px;
+    }
+    #solutionBtn {
+      display: none;
+      background: #28a745;
+      margin-top: 0.5rem;
+    }
   </style>
 </head>
 <body>
 
-  <h2>🔢 Rätsel 1 – Alter Markt → Narrenmühle</h2>
-  <p><strong>Dein nächstes Ziel</strong> liegt nicht hier, sondern dort, wo sich Narren und Wind vereinen.</p>
-  <p><strong>Aufgabe:</strong> Gib den Namen dieses Ortes ein.</p>
+  <h2>🔢 Rätsel 1 – Alter Markt</h2>
+  <p><strong>Willkommen am Brunnen des Alter Markts!</strong></p>
+  <p><strong>Aufgabe:</strong><br>
+     Finde den Namen des nächsten Wahrzeichens in Dülken.</p>
 
-  <input id="answer" type="text" placeholder="z. B. Narrenmühle">
+  <input id="answer" type="text" placeholder="Antwort hier eintippen">
   <button id="check">Antwort prüfen</button>
   <button id="hintBtn">Nächster Tipp</button>
   <div id="feedback"></div>
@@ -38,9 +59,9 @@
 
   <script>
     const tips = [
-      "Stell dir eine Mühle vor – aber statt Korn mahlt sie Frohsinn.",
-      "Hier treffen sich während der Session alle Narren zum Feiern.",
-      "Der Name kombiniert „Narren“ mit einem Bauwerk, das normalerweise mahlt."
+      "Dieses Bauwerk hat Flügel, die sich im Wind drehen könnten.",
+      "Es ist jedes Jahr Zentrum kleiner Jecken-Runden.",
+      "Sein Name endet auf „-mühle“."
     ];
     let tipIndex = 0;
 
@@ -49,17 +70,15 @@
       if (ans === 'narrenmühle' || ans === 'narrenmuehle') {
         window.location.href = 'station1.html';
       } else {
-        document.getElementById('feedback').textContent = 'Leider falsch – versuche es noch einmal!';
+        document.getElementById('feedback').textContent = 'Leider falsch – probier’s nochmal!';
       }
     };
 
     document.getElementById('hintBtn').onclick = () => {
       if (tipIndex < tips.length) {
-        // Anzeige des nächsten Tipps
         const div = document.getElementById('hints');
         div.innerHTML += `<p>🔍 Tipp ${tipIndex+1}: ${tips[tipIndex]}</p>`;
         tipIndex++;
-        // Nach dem 3. Tipp: Lösungsknopf einblenden
         if (tipIndex === tips.length) {
           document.getElementById('solutionBtn').style.display = 'block';
         }
