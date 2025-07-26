@@ -1,22 +1,49 @@
 <!DOCTYPE html>
 <html>
-<head><meta charset="UTF-8"><title>Station Start</title></head>
+<head>
+  <meta charset="UTF-8">
+  <title>🔢 Rätsel 1 – Startpunkt: Alter Markt</title>
+  <style>
+    body { font-family: sans-serif; max-width: 600px; margin: 2rem auto; padding: 1rem; }
+    input, button { font-size: 1rem; padding: 0.5rem; margin: 0.5rem 0; }
+    #feedback { color: red; margin-top: 0.5rem; }
+    #hints { display: none; margin-top: 1rem; background: #f9f9f9; padding: 1rem; border-radius: 5px; }
+    #hints ul { margin: 0; padding-left: 1.2rem; }
+    #solution { margin-top: 0.5rem; font-weight: bold; }
+  </style>
+</head>
 <body>
-  <h2>🎉 Du hast den Alter Markt gefunden!</h2>
-  <p>Ab hier startet das spannende Rätsel durch Dülken.</p>
+  <h2>🔢 Rätsel 1 – Startpunkt: Alter Markt</h2>
+  <p>Ab hier startet das spannende Rätsel durch Dülken:</p>
   <p><strong>Aufgabe:</strong><br>
-     Wo dreht sich alles? (Tipp: Narrenmühle)</p>
-  <input id="answer" placeholder="z. B. Narrenmühle">
+     Finde heraus, wie die nächste Station heißt.</p>
+
+  <input id="answer" placeholder="Deine Lösung">
   <button id="check">Antwort prüfen</button>
+  <button id="showHints">Tipps anzeigen</button>
   <div id="feedback"></div>
+
+  <div id="hints">
+    <p><strong>Tipps zur Lösung:</strong></p>
+    <ul>
+      <li>Dieser Ort ist untrennbar mit dem Dülkener Karneval verbunden.</li>
+      <li>Er besitzt ein markantes Zahnrad-ähnliches Bauwerk, das sich drehen würde.</li>
+      <li>Sein Name endet auf „-mühle“, doch hier mahlt kein Getreide.</li>
+    </ul>
+    <div id="solution">Lösung: Narrenmühle</div>
+  </div>
+
   <script>
-    document.getElementById('check').onclick = () => {
-      let ans = document.getElementById('answer').value.trim().toLowerCase();
+    document.getElementById('check').onclick = function() {
+      const ans = document.getElementById('answer').value.trim().toLowerCase();
       if (ans === 'narrenmühle' || ans === 'narrenmuehle') {
         window.location.href = 'station1.html';
       } else {
-        document.getElementById('feedback').innerText = 'Falsch, probiere es noch mal.';
+        document.getElementById('feedback').innerText = 'Leider falsch – versuche es noch einmal.';
       }
+    };
+    document.getElementById('showHints').onclick = function() {
+      document.getElementById('hints').style.display = 'block';
     };
   </script>
 </body>
