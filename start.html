@@ -4,45 +4,24 @@
   <meta charset="UTF-8">
   <title>🔢 Rätsel 1 – Alter Markt</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      max-width: 640px;
-      margin: 2rem auto;
-      padding: 1rem;
-      color: #333;
-    }
-    h2 { font-size: 1.5rem; margin-bottom: 0.5rem; }
-    p { margin: 0.5rem 0; }
-    input, button {
-      width: 100%;
-      box-sizing: border-box;
-      font-size: 1rem;
-      padding: 0.6rem;
-      margin-top: 0.5rem;
-    }
-    button {
-      cursor: pointer;
-      background: #007ACC;
-      color: #fff;
-      border: none;
-      border-radius: 4px;
-    }
-    #hintBtn { background: #555; }
-    #feedback { color: crimson; margin-top: 0.5rem; }
-    #hints {
-      margin-top: 1rem;
-      background: #f0f8ff;
-      padding: 1rem;
-      border-radius: 4px;
-    }
-    #solutionBtn {
-      display: none;
-      background: #28a745;
-      margin-top: 0.5rem;
-    }
+    body { font-family: Arial, sans-serif; max-width:640px; margin:2rem auto; padding:1rem; color:#333; }
+    h2 { font-size:1.5rem; margin-bottom:.5rem; }
+    p { margin:.5rem 0; }
+    input, button { width:100%; box-sizing:border-box; font-size:1rem; padding:.6rem; margin-top:.5rem; }
+    button { cursor:pointer; background:#007ACC; color:#fff; border:none; border-radius:4px; }
+    #hintBtn { background:#555; }
+    #feedback { color:crimson; margin-top:.5rem; }
+    #hints { margin-top:1rem; background:#f0f8ff; padding:1rem; border-radius:4px; display:none; }
+    #solutionBtn { display:none; background:#28a745; margin-top:.5rem; }
   </style>
 </head>
 <body>
+  <script>
+    // Timer automatisch starten, wenn noch nicht gesetzt
+    if (!localStorage.getItem('duelken_startTime')) {
+      localStorage.setItem('duelken_startTime', Date.now());
+    }
+  </script>
 
   <h2>🔢 Rätsel 1 – Alter Markt</h2>
   <p><strong>Willkommen am Brunnen des Alter Markts!</strong></p>
@@ -61,7 +40,7 @@
     const tips = [
       "Dieses Bauwerk hat Flügel, die sich im Wind drehen könnten.",
       "Es ist jedes Jahr Zentrum kleiner Jecken-Runden.",
-      "Sein Name endet auf „-mühle“."
+      "Sein Name endet auf ‚-mühle‘."
     ];
     let tipIndex = 0;
 
@@ -77,7 +56,10 @@
     document.getElementById('hintBtn').onclick = () => {
       if (tipIndex < tips.length) {
         const div = document.getElementById('hints');
-        div.innerHTML += `<p>🔍 Tipp ${tipIndex+1}: ${tips[tipIndex]}</p>`;
+        div.style.display = 'block';
+        const p = document.createElement('p');
+        p.textContent = `🔍 Tipp ${tipIndex+1}: ${tips[tipIndex]}`;
+        div.appendChild(p);
         tipIndex++;
         if (tipIndex === tips.length) {
           document.getElementById('solutionBtn').style.display = 'block';
@@ -89,6 +71,5 @@
       alert('➡️ Lösung: Narrenmühle');
     };
   </script>
-
 </body>
 </html>
