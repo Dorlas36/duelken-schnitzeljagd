@@ -1,13 +1,27 @@
 <!DOCTYPE html>
 <html>
-<head><meta charset="UTF-8"><title>Start deiner Schnitzeljagd</title></head>
+<head><meta charset="UTF-8"><title>Intro</title></head>
 <body>
-<h2>👋 Willkommen zur Dülkener Rätselreise!</h2>
-<p>Bevor du dich auf Spurensuche begibst, musst du das Zentrum der Narren finden.</p>
-<h3>Rätsel:</h3>
-<p>Ich bin ein Ort mit einem Brunnen und umgeben von alten Fassaden.<br>
-Ich sah schon viele Jecken kommen und gehen,<br>
-hier beginnt die Spurensuche – kannst du ihn erkennen?</p>
-<p><strong>Tipp:</strong> Es ist ein „alter“ Ort.</p>
+  <h2>👋 Willkommen zur Dülkener Rätselreise!</h2>
+  <p><strong>Hier beginnt dein Abenteuer:</strong><br>
+     Du stehst jetzt am <em>Alter Markt</em> – dem offiziellen Startpunkt mit dem Brunnen und den alten Fassaden.</p>
+  <p><strong>Aufgabe:</strong><br>
+     Finde heraus, wie dieser Platz heißt. Gib den genauen Namen ein.</p>
+  <input id="answer" placeholder="z. B. Alter Markt">
+  <button id="check">Antwort prüfen</button>
+  <div id="feedback"></div>
+  <script>
+    document.getElementById('check').onclick = () => {
+      let ans = document.getElementById('answer').value.trim().toLowerCase();
+      if (ans === 'alter markt') {
+        localStorage.setItem('duelken_started','true');
+        // Kurzer Hinweis, dass es jetzt spannend wird:
+        alert('✅ Richtig! Ab hier wird’s spannend – weiter zur jecken Action!');
+        window.location.href = 'start.html';
+      } else {
+        document.getElementById('feedback').innerText = 'Leider falsch. Schau dich noch einmal um.';
+      }
+    };
+  </script>
 </body>
 </html>
