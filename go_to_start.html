@@ -1,13 +1,56 @@
 <!DOCTYPE html>
 <html>
-<head><meta charset="UTF-8"><title>Erster Schritt</title></head>
+<head>
+  <meta charset="UTF-8">
+  <title>Rätsel-Start</title>
+  <style>
+    body { font-family: sans-serif; max-width: 600px; margin: 2rem auto; padding: 1rem; }
+    h2 { color: #2c3e50; }
+    button { padding: 0.5rem 1rem; font-size: 1rem; margin-top: 1rem; }
+  </style>
+</head>
 <body>
-<h2>🔒 Halt, Rätselstarter!</h2>
-<p>Bevor du weitermachen darfst, musst du zurück zum Anfang finden.</p>
-<h3>Rätsel:</h3>
-<p>Ich bin ein Ort mit einem Brunnen und umgeben von alten Fassaden.<br>
-Ich sah schon viele Jecken kommen und gehen,<br>
-hier beginnt die Spurensuche – kannst du ihn erkennen?</p>
-<p><strong>Lösung:</strong> Gehe zum <em>Alter Markt</em> und scanne dort den QR-Code, um das Abenteuer zu starten.</p>
+  <div id="content">
+    <!-- Content will be injected by script -->
+  </div>
+
+  <script>
+    // Determine destination page from query parameter
+    const params = new URLSearchParams(window.location.search);
+    const dest = params.get('dest') || 'intro.html';
+
+    // If scanning intro QR, mark started and go directly to intro.html
+    if (dest === 'intro.html') {
+      localStorage.setItem('duelken_started', 'true');
+      window.location.href = dest;
+    }
+
+    // Check if user has started the game before
+    const started = localStorage.getItem('duelken_started');
+
+    if (started) {
+      // If already started, redirect to the intended station
+      window.location.href = dest;
+    } else {
+      // If not started, show the riddle to go to the start point
+      const content = document.getElementById('content');
+      content.innerHTML = `
+        <h2>🔒 Halt, Rätselstarter!</h2>
+        <p>Bevor du weitermachen darfst, musst du zum Startpunkt gelangen.</p>
+        <h3>Rätsel:</h3>
+        <p>
+          Ich bin ein Ort mit einem Brunnen und umgeben von alten Fassaden.<br>
+          Ich sah schon viele Jecken kommen und gehen,<br>
+          hier beginnt die Spurensuche – kannst du ihn erkennen?
+        </p>
+        <p><strong>Lösung:</strong> Gehe zum <em>Alter Markt</em> und scanne dort den ersten QR-Code.</p>
+        <button id="goStart">Zum Start</button>
+      `;
+      document.getElementById('goStart').onclick = () => {
+        localStorage.setItem('duelken_started', 'true');
+        window.location.href = 'intro.html';
+      };
+    }
+  </script>
 </body>
 </html>
