@@ -4,107 +4,64 @@
   <meta charset="UTF-8">
   <title>🔢 Rätsel 1 – Narrenmühle</title>
   <style>
-    body {
-      background: #e8f5e9;
-      font-family: 'Comic Sans MS', sans-serif;
-      max-width: 600px;
-      margin: 2rem auto;
-      padding: 1rem;
-      color: #1b5e20;
-    }
-    h1 {
-      text-align: center;
-      color: #2e7d32;
-      font-size: 2rem;
-      margin-bottom: 0.5rem;
-    }
-    p {
-      font-size: 1.2rem;
-      margin: 0.5rem 0;
-    }
-    input, button {
-      width: 100%;
-      padding: 0.8rem;
-      margin: 0.5rem 0;
-      font-size: 1.1rem;
-      border-radius: 8px;
-      box-sizing: border-box;
-    }
-    input {
-      border: 3px dashed #81c784;
-    }
-    #check {
-      background: #81c784;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-    #check:hover {
-      background: #a5d6a7;
-    }
-    #hintBtn {
-      background: #fff176;
-      border: 2px solid #fdd835;
-      color: #3e2723;
-      cursor: pointer;
-    }
-    #hints p {
-      background: #fffde7;
-      padding: 0.5rem;
-      border-radius: 6px;
-      margin-top: 0.3rem;
-    }
-    #feedback {
-      font-weight: bold;
-      margin-top: 0.5rem;
-      min-height: 1.2em;
-    }
+    body { background:#e8f5e9; font-family:'Comic Sans MS',sans-serif; max-width:600px; margin:2rem auto; padding:1rem; color:#1b5e20; }
+    h1 { text-align:center; color:#2e7d32; font-size:2rem; margin-bottom:.5rem; }
+    p { font-size:1.2rem; margin:.5rem 0; }
+    input, button { width:100%; padding:.8rem; margin:.5rem 0; font-size:1.1rem; border-radius:8px; box-sizing:border-box; }
+    input { border:3px dashed #81c784; }
+    #check { background:#81c784; color:white; border:none; cursor:pointer; }
+    #check:hover { background:#a5d6a7; }
+    #hintBtn { background:#fff176; border:2px solid #fdd835; color:#3e2723; cursor:pointer; }
+    #hints p { background:#fffde7; padding:.5rem; border-radius:6px; margin-top:.3rem; }
+    #feedback { font-weight:bold; margin-top:.5rem; min-height:1.2em; }
   </style>
 </head>
 <body>
-  <h1>🔢 Rätsel 1 – Narrenmühle</h1>
-  <p><strong>Aufgabe:</strong><br>
-     Wie heißt dieses bunte Karnevals-Wahrzeichen mit den Flügeln?</p>
+  <script>
+    if (localStorage.getItem('duelken_started') !== 'true') {
+      localStorage.setItem('duelken_redirectAfter','start.html');
+      location.href='intro.html';
+    }
+  </script>
 
-  <input id="answer" type="text" placeholder="Schreibe hier deine Antwort">
+  <h1>🔢 Rätsel 1 – Narrenmühle</h1>
+  <p><strong>Aufgabe:</strong><br>Wie heißt dieses bunte Karnevals-Wahrzeichen mit Flügeln?</p>
+
+  <input id="answer" type="text" placeholder="Deine Antwort">
   <button id="check">Antwort prüfen</button>
   <button id="hintBtn">Nächster Tipp</button>
   <div id="feedback"></div>
   <div id="hints" style="display:none;"></div>
 
   <script>
-    // Die richtigen Antworten (mit oder ohne Umlaut)
     const valid = ['narrenmühle','narrenmuehle'];
-    // Tipps
-    const tips = [
-      "Es mahlt keinen Korn, sondern nur Frohsinn!",
-      "Bei Karneval tanzen hier alle Jecken im Kreis.",
-      "Sein Name endet auf „-mühle“."
+    const tips  = [
+      "Es mahlt keinen Korn, sondern Frohsinn!",
+      "Alle Jecken treffen sich hier zum Feiern.",
+      "Im Namen steckt das Wort „Mühle“."
     ];
-    let tipIndex = 0;
+    let ti = 0;
 
-    // Antwort-Button
-    document.getElementById('check').addEventListener('click', () => {
-      const ans = document.getElementById('answer').value.trim().toLowerCase();
-      const fb = document.getElementById('feedback');
-      if (valid.includes(ans)) {
-        fb.textContent = '✅ Richtig! Weiter geht’s in 1 Sekunde...';
-        setTimeout(() => window.location.href = 'station1.html', 1000);
+    document.getElementById('check').onclick = () => {
+      const a = document.getElementById('answer').value.trim().toLowerCase();
+      const f = document.getElementById('feedback');
+      if (valid.includes(a)) {
+        f.textContent = '✅ Richtig! Weiter geht’s…';
+        setTimeout(()=> location.href='station1.html', 800);
       } else {
-        fb.textContent = '❌ Noch nicht ganz – versuch’s nochmal!';
+        f.textContent = '❌ Noch nicht ganz – probier’s nochmal!';
       }
-    });
+    };
 
-    // Tipp-Button
-    document.getElementById('hintBtn').addEventListener('click', () => {
-      if (tipIndex < tips.length) {
-        const div = document.getElementById('hints');
-        div.style.display = 'block';
+    document.getElementById('hintBtn').onclick = () => {
+      if (ti < tips.length) {
+        const c = document.getElementById('hints');
+        c.style.display = 'block';
         const p = document.createElement('p');
-        p.textContent = '🔍 Tipp ' + (tipIndex+1) + ': ' + tips[tipIndex++];
-        div.appendChild(p);
+        p.textContent = '🔍 Tipp '+(ti+1)+': '+tips[ti++];
+        c.appendChild(p);
       }
-    });
+    };
   </script>
 </body>
 </html>
