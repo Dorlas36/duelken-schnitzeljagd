@@ -2,20 +2,135 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>🔄 Weiter zum Start</title>
-  <script>
-    // Redirect-Guard: führt zum Intro, wenn duelken_started fehlt
-    const params = new URLSearchParams(location.search);
-    const dest = params.get('dest') || 'intro.html';
-    if (localStorage.getItem('duelken_started') !== 'true') {
-      localStorage.setItem('duelken_redirectAfter', dest);
-      location.href = 'intro.html';
-    } else {
-      location.href = dest;
+  <title>🔄 Zurück zum Start oder weitermachen?</title>
+  <style>
+    body {
+      background: #fff8e1;
+      font-family: 'Comic Sans MS', sans-serif;
+      max-width: 600px;
+      margin: 2rem auto;
+      padding: 1rem;
+      color: #5d4037;
     }
-  </script>
+    h1 {
+      text-align: center;
+      color: #bf360c;
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+    }
+    button {
+      width: 100%;
+      padding: 1rem;
+      margin: 0.5rem 0;
+      font-size: 1.1rem;
+      border-radius: 8px;
+      border: 2px dashed #bf360c;
+      background: #ffe0b2;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #ffd8a3;
+    }
+    #puzzle, #feedback, #hints {
+      display: none;
+      margin-top: 1rem;
+    }
+    #puzzle input {
+      width: 100%;
+      padding: 0.8rem;
+      font-size: 1.1rem;
+      margin-top: 0.5rem;
+      border: 2px dashed #81c784;
+      border-radius: 8px;
+      box-sizing: border-box;
+    }
+    #puzzle button {
+      background: #81c784;
+      color: white;
+      border: none;
+    }
+    #hints p {
+      background: #fffde7;
+      padding: 0.5rem;
+      border-radius: 6px;
+      margin-top: 0.3rem;
+    }
+    #feedback {
+      color: #d32f2f;
+      font-weight: bold;
+      margin-top: 0.5rem;
+    }
+  </style>
 </head>
 <body>
-  <p>Weiterleitung …</p>
+  <script>
+    // Bestimme die Ziel-Station aus URL ?dest=stationX.html
+    const params = new URLSearchParams(location.search);
+    const dest = params.get('dest') || 'start.html';
+  </script>
+
+  <h1>🔄 Was möchtest du tun?</h1>
+  <button id="toStartBtn">Ja, leite mich zum Startpunkt (mit kleinem Rätsel)</button>
+  <button id="skipBtn">Nein, weiter zur Station</button>
+
+  <div id="puzzle">
+    <p><strong>Rätsel:</strong><br>
+       Wie heißt der Platz mit dem Brunnen, an dem das Abenteuer begann?</p>
+    <input id="answer" placeholder="z.B. Alter Markt">
+    <button id="check">Antwort prüfen</button>
+    <div id="feedback"></div>
+    <div id="hints"></div>
+  </div>
+
+  <script>
+    const toStartBtn = document.getElementById('toStartBtn');
+    const skipBtn    = document.getElementById('skipBtn');
+    const puzzle     = document.getElementById('puzzle');
+    const feedback   = document.getElementById('feedback');
+    const hintsDiv   = document.getElementById('hints');
+    const tips       = [
+      "Es ist der allererste Ort mit einem großen Brunnen.",
+      "Der Name steht im Titel der ersten Rätsel-Seite.",
+      "Zwei Wörter, das zweite ist „Markt“."
+    ];
+    let tipIndex = 0;
+
+    // Wenn man weitermachen will
+    skipBtn.onclick = () => {
+      window.location.href = dest;
+    };
+
+    // Wenn man zurück zum Start möchte
+    toStartBtn.onclick = () => {
+      document.getElementById('toStartBtn').style.display = 'none';
+      document.getElementById('skipBtn').style.display    = 'none';
+      puzzle.style.display = 'block';
+    };
+
+    // Prüfe die Antwort
+    document.getElementById('check').onclick = () => {
+      const ans = document.getElementById('answer').value.trim().toLowerCase();
+      if (ans === 'alter markt' || ans === 'altermarkt') {
+        // Flaggen setzen und weiter zum echten Start
+        localStorage.setItem('duelken_started','true');
+        if (localStorage.getItem('duelken_timerEnabled') === 'true') {
+          localStorage.setItem('duelken_startTime', Date.now());
+        }
+        window.location.href = 'start.html';
+      } else {
+        feedback.textContent = '❌ Noch nicht richtig. Versuch’s nochmal!';
+      }
+    };
+
+    // Zeige Tipps nacheinander, wenn man Feedback klickt
+    feedback.onclick = () => {
+      if (tipIndex < tips.length) {
+        const p = document.createElement('p');
+        p.textContent = '🔍 Tipp ' + (tipIndex+1) + ': ' + tips[tipIndex++];
+        hintsDiv.appendChild(p);
+        hintsDiv.style.display = 'block';
+      }
+    };
+  </script>
 </body>
 </html>
