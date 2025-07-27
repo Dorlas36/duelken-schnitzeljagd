@@ -1,23 +1,56 @@
 <!DOCTYPE html>
-<html lang="de"><head><meta charset="UTF-8"><title>🔢 Rätsel 5 – Brücke an der Nette</title><style>
-body{background:#e0f7fa;font-family:'Comic Sans MS',sans-serif;max-width:600px;margin:2rem auto;padding:1rem;color:#006064;}
-h1{text-align:center;color:#00838f;font-size:2.25rem;}
-p{font-size:1.2rem;margin:0.5rem 0;}
-input,button{width:100%;padding:0.8rem;margin:0.5rem 0;font-size:1.1rem;border-radius:8px;}
-input{border:3px dashed #4dd0e1;}
-button{background:#4dd0e1;color:white;border:none;cursor:pointer;}
-button:hover{background:#26c6da;}
-#hintBtn{background:#fff59d;border:2px solid #fdd835;color:#3e2723;}
-#hints p{background:#b2ebf2;padding:0.5rem;border-radius:6px;margin-top:0.3rem;}
-#feedback{color:#d32f2f;font-weight:bold;margin-top:0.5rem;}
-</style></head><body>
-<h1>🔢 Rätsel 5</h1><p><strong>Aufgabe:</strong> Finde am Geländer ein Graffiti und notiere den ersten Buchstaben.</p>
-<input id="answer" placeholder="Dein Buchstabe"><button id="check">Antwort prüfen</button><button id="hintBtn">Nächster Tipp</button>
-<div id="feedback"></div><div id="hints" style="display:none;"></div>
-<script>
-const tips4=["Schau am Geländer.","Konsonant.","Anfang von 'Nette'."];
-let m=0;
-document.getElementById('check').onclick=()=>{if(document.getElementById('answer').value.trim().toLowerCase()==='n')location.href='final.html';else document.getElementById('feedback').textContent='Nochmals!';};
-document.getElementById('hintBtn').onclick=()=>{if(m<tips4.length){let d=document.getElementById('hints');d.style.display='block';let p=document.createElement('p');p.textContent='🔍 Tipp '+(m+1)+': '+tips4[m++];d.appendChild(p);} };
-</script>
-</body></html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>🔢 Rätsel 5 – Brücke an der Nette</title>
+  <style>
+    body { background:#e0f7fa; font-family:'Comic Sans MS',sans-serif; max-width:600px; margin:2rem auto; padding:1rem; color:#006064; }
+    h1 { text-align:center; color:#00838f; font-size:2rem; }
+    p  { font-size:1.2rem; }
+    input,button { width:100%;padding:.8rem;margin:.5rem 0;font-size:1.1rem;border-radius:8px;box-sizing:border-box; }
+    input { border:3px dashed #4dd0e1; }
+    #check  { background:#4dd0e1;color:white;border:none;cursor:pointer; }
+    #hintBtn{ background:#fff59d;border:2px solid #fdd835;color:#3e2723; }
+    #hints p{ background:#b2ebf2;padding:.5rem;border-radius:6px;margin-top:.3rem; }
+    #feedback{ color:#d32f2f;font-weight:bold; }
+  </style>
+</head>
+<body>
+  <script>
+    if (!localStorage.getItem('duelken_started')) {
+      localStorage.setItem('duelken_redirectAfter','station4.html');
+      location.href='intro.html';
+    }
+  </script>
+
+  <h1>🔢 Rätsel 5</h1>
+  <p><strong>Aufgabe:</strong><br>Finde am Geländer ein Graffiti und notiere den ersten Buchstaben.</p>
+
+  <input id="answer" placeholder="Dein Buchstabe">
+  <button id="check">Antwort prüfen</button>
+  <button id="hintBtn">Nächster Tipp</button>
+  <div id="feedback"></div>
+  <div id="hints" style="display:none;"></div>
+
+  <script>
+    const tips = ["Schau am Geländer.","Es ist ein Konsonant.","Gleicher Buchstabe wie 'Nette'."];
+    let m = 0;
+    document.getElementById('check').onclick = () => {
+      if (document.getElementById('answer').value.trim().toLowerCase() === 'n') {
+        location.href = 'final.html';
+      } else {
+        document.getElementById('feedback').textContent = 'Noch ein Versuch!';
+      }
+    };
+    document.getElementById('hintBtn').onclick = () => {
+      if (m < tips.length) {
+        const c = document.getElementById('hints');
+        c.style.display = 'block';
+        const p = document.createElement('p');
+        p.textContent = '🔍 Tipp '+(m+1)+': '+tips[m++];
+        c.appendChild(p);
+      }
+    };
+  </script>
+</body>
+</html>
