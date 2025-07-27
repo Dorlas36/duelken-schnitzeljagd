@@ -1,23 +1,56 @@
 <!DOCTYPE html>
-<html lang="de"><head><meta charset="UTF-8"><title>🔢 Rätsel 3 – Kirche</title><style>
-body{background:#f3e5f5;font-family:'Comic Sans MS',sans-serif;max-width:600px;margin:2rem auto;padding:1rem;color:#4a148c;}
-h1{text-align:center;color:#6a1b9a;font-size:2.25rem;}
-p{font-size:1.2rem;margin:0.5rem 0;}
-input,button{width:100%;padding:0.8rem;margin:0.5rem 0;font-size:1.1rem;border-radius:8px;}
-input{border:3px dashed #ce93d8;}
-button{background:#ba68c8;color:white;border:none;cursor:pointer;}
-button:hover{background:#ab47bc;}
-#hintBtn{background:#fff59d;border:2px solid #fdd835;color:#3e2723;}
-#hints p{background:#fffde7;padding:0.5rem;border-radius:6px;margin-top:0.3rem;}
-#feedback{color:#d32f2f;font-weight:bold;margin-top:0.5rem;}
-</style></head><body>
-<h1>🔢 Rätsel 3</h1><p><strong>Aufgabe:</strong> Addiere alle römischen Zahlen I–XII.</p>
-<input id="answer" type="number" placeholder="Deine Summe"><button id="check">Antwort prüfen</button><button id="hintBtn">Nächster Tipp</button>
-<div id="feedback"></div><div id="hints" style="display:none;"></div>
-<script>
-const tips2=["I=1,V=5,X=10.","Zähle I bis XII.","Vergiss XII=12!"];
-let k=0;
-document.getElementById('check').onclick=()=>{if(document.getElementById('answer').value.trim()==='78')location.href='station3.html';else document.getElementById('feedback').textContent='Fast, nochmal!';};
-document.getElementById('hintBtn').onclick=()=>{if(k<tips2.length){let d=document.getElementById('hints');d.style.display='block';let p=document.createElement('p');p.textContent='🔍 Tipp '+(k+1)+': '+tips2[k++];d.appendChild(p);} };
-</script>
-</body></html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>🔢 Rätsel 3 – Cornelius Kirche</title>
+  <style>
+    body { background:#f3e5f5; font-family:'Comic Sans MS',sans-serif; max-width:600px; margin:2rem auto; padding:1rem; color:#4a148c; }
+    h1 { text-align:center; color:#6a1b9a; font-size:2rem; }
+    p  { font-size:1.2rem; }
+    input,button { width:100%;padding:.8rem;margin:.5rem 0;font-size:1.1rem;border-radius:8px;box-sizing:border-box; }
+    input { border:3px dashed #ce93d8; }
+    #check  { background:#ba68c8;color:white;border:none;cursor:pointer; }
+    #hintBtn{ background:#fff59d;border:2px solid #fdd835;color:#3e2723; }
+    #hints p{ background:#fffde7;padding:.5rem;border-radius:6px;margin-top:.3rem; }
+    #feedback{ color:#d32f2f;font-weight:bold; }
+  </style>
+</head>
+<body>
+  <script>
+    if (!localStorage.getItem('duelken_started')) {
+      localStorage.setItem('duelken_redirectAfter','station2.html');
+      location.href='intro.html';
+    }
+  </script>
+
+  <h1>🔢 Rätsel 3</h1>
+  <p><strong>Aufgabe:</strong><br>Addiere alle römischen Zahlen I–XII.</p>
+
+  <input id="answer" type="number" placeholder="Deine Summe">
+  <button id="check">Antwort prüfen</button>
+  <button id="hintBtn">Nächster Tipp</button>
+  <div id="feedback"></div>
+  <div id="hints" style="display:none;"></div>
+
+  <script>
+    const tips = ["I=1, V=5, X=10.","Zähle I bis XII.","Vergiss XII=12."];
+    let k = 0;
+    document.getElementById('check').onclick = () => {
+      if (document.getElementById('answer').value.trim() === '78') {
+        location.href = 'station3.html';
+      } else {
+        document.getElementById('feedback').textContent = 'Nicht richtig!';
+      }
+    };
+    document.getElementById('hintBtn').onclick = () => {
+      if (k < tips.length) {
+        const c = document.getElementById('hints');
+        c.style.display = 'block';
+        const p = document.createElement('p');
+        p.textContent = '🔍 Tipp '+(k+1)+': '+tips[k++];
+        c.appendChild(p);
+      }
+    };
+  </script>
+</body>
+</html>
