@@ -1,43 +1,180 @@
 <!DOCTYPE html>
-<html>
+<html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>Rätsel-Start</title>
+  <title>🔄 Zurück zum Start</title>
+  <style>
+    body { background:#fff8e1; font-family:'Comic Sans MS',sans-serif; max-width:600px; margin:2rem auto; padding:1rem; color:#5d4037; }
+    h1 { text-align:center; color:#bf360c; font-size:2rem; }
+    p { font-size:1.2rem; margin-top:1rem; }
+    input, button { width:100%; padding:0.8rem; margin:0.5rem 0; font-size:1.1rem; border-radius:8px; box-sizing:border-box; }
+    input { border:2px dashed #bf360c; }
+    #check { background:#bf360c; color:white; border:none; cursor:pointer; }
+    #check:hover { background:#d84315; }
+    #hintBtn { background:#fff59d; border:2px solid #fdd835; color:#3e2723; cursor:pointer; }
+    #feedback { color:#d32f2f; font-weight:bold; margin-top:0.5rem; min-height:1.2em; }
+    #hints p { background:#ffe0b2; padding:0.5rem; border-radius:6px; margin-top:0.3rem; }
+  </style>
+</head>
+<body>
+  <h1>🔄 Du bist nicht am Startpunkt!</h1>
+  <p>Bevor du weiterrätselst, finde bitte den <strong>Startpunkt</strong>.</p>
+  <p><strong>Rätsel:</strong><br>Wie heißt der Ort, an dem diese Schnitzeljagd beginnt?</p>
+  <input id="answer" type="text" placeholder="Deine Antwort">
+  <button id="check">Antwort prüfen</button>
+  <button id="hintBtn">Nächster Tipp</button>
+  <div id="feedback"></div>
+  <div id="hints" style="display:none;"></div>
+
+  <script>
+    // Zielseite aus query-param
+    const params = new URLSearchParams(location.search);
+    const dest = params.get('dest') || 'start.html';
+    // Tipps
+    const tips = [
+      'Der Name besteht aus zwei Wörtern.',
+      'Das erste Wort bedeutet „alt“.',
+      'Das zweite Wort bezeichnet einen öffentlichen Platz.'
+    ];
+    let idx = 0;
+
+    document.getElementById('check').onclick = () => {
+      const val = document.getElementById('answer').value.trim().toLowerCase();
+      const fb = document.getElementById('feedback');
+      if (val === 'alter markt') {
+        // markiere gestartet
+        localStorage.setItem('duelken_started','true');
+        // ggf. Timer starten wenn aktiviert
+        if (localStorage.getItem('duelken_timerEnabled') === 'true' && !localStorage.getItem('duelken_startTime')) {
+          localStorage.setItem('duelken_startTime', Date.now());
+        }
+        fb.textContent = '✅ Super! Weiter geht’s…';
+        setTimeout(() => location.href = dest, 800);
+      } else {
+        fb.textContent = '❌ Noch nicht ganz – versuch’s nochmal!';
+      }
+    };
+
+    document.getElementById('hintBtn').onclick = () => {
+      if (idx < tips.length) {
+        const h = document.getElementById('hints');
+        h.style.display = 'block';
+        const p = document.createElement('p');
+        p.textContent = '🔍 Tipp ' + (idx+1) + ': ' + tips[idx++];
+        h.appendChild(p);
+      }
+    };
+  </script>
+</body>
+</html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>🎁 Finale – Spielplatz Schirickstraße</title>
   <style>
     body {
-      font-family: sans-serif;
+      background: #f1f8e9;
+      font-family: 'Comic Sans MS', sans-serif;
       max-width: 600px;
       margin: 2rem auto;
       padding: 1rem;
+      color: #33691e;
+    }
+    h1 {
+      text-align: center;
+      color: #558b2f;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    #timeDisplay {
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+    }
+    form {
+      margin-bottom: 1rem;
+    }
+    input, button {
+      width: 100%;
+      padding: 0.8rem;
+      margin: 0.5rem 0;
+      font-size: 1.1rem;
+      border-radius: 8px;
+      box-sizing: border-box;
+    }
+    input {
+      border: 2px solid #aed581;
     }
     button {
-      padding: 0.5rem 1rem;
-      font-size: 1rem;
-      margin: 0.5rem;
+      background: #aed581;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 0.5rem;
+      text-align: left;
+    }
+    th {
+      background: #c5e1a5;
     }
   </style>
 </head>
 <body>
-  <h2>🔒 Halt, Rätselstarter!</h2>
-  <p>Du hast eine Station gescannt, ohne das Rätsel von vorn begonnen zu haben.</p>
-  <p><strong>Was möchtest du tun?</strong></p>
-  <button id="start">Zum Anfang (Rätsel von vorn lösen)</button>
-  <button id="skip">Direkt zur gescannten Station</button>
+  <h1>🎁 Finale – Spielplatz Schirickstraße</h1>
+  <div id="timeDisplay">Deine Zeit: …</div>
+
+  <form id="scoreForm">
+    <input type="text" id="playerName" placeholder="Dein Name (optional)">
+    <button type="submit">Eintragen (freiwillig)</button>
+  </form>
+
+  <table id="resultsTable">
+    <thead>
+      <tr><th>Name</th><th>Zeit</th></tr>
+    </thead>
+    <tbody></tbody>
+  </table>
 
   <script>
-    // Welcher Ziel-Seite soll gefolgt werden?
-    const params = new URLSearchParams(window.location.search);
-    const dest = params.get('dest') || 'intro.html';
+    // Zeit berechnen
+    const timerEnabled = localStorage.getItem('duelken_timerEnabled') === 'true';
+    let startTime = timerEnabled ? parseInt(localStorage.getItem('duelken_startTime'), 10) : null;
+    if (!startTime) startTime = Date.now();
+    const diff = Date.now() - startTime;
+    const mins = Math.floor(diff / 60000);
+    const secs = Math.floor((diff % 60000) / 1000);
+    const timeStr = mins + 'm ' + secs + 's';
+    document.getElementById('timeDisplay').textContent = 'Deine Zeit: ' + timeStr;
 
-    document.getElementById('start').onclick = () => {
-      // Flag setzen und zurück zum Intro
-      localStorage.setItem('duelken_started', 'true');
-      window.location.href = 'intro.html';
-    };
-    document.getElementById('skip').onclick = () => {
-      // Flag setzen und direkt zum Ziel
-      localStorage.setItem('duelken_started', 'true');
-      window.location.href = dest;
+    // Scores verwalten
+    const form = document.getElementById('scoreForm');
+    const tbody = document.querySelector('#resultsTable tbody');
+    let scores = JSON.parse(localStorage.getItem('duelken_scores') || '[]');
+
+    function render() {
+      tbody.innerHTML = '';
+      scores.forEach(entry => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${entry.name}</td><td>${entry.time}</td>`;
+        tbody.appendChild(tr);
+      });
+    }
+
+    render(); // initiale Anzeige
+
+    form.onsubmit = e => {
+      e.preventDefault();
+      const name = document.getElementById('playerName').value.trim() || '-';
+      scores.push({ name, time: timeStr });
+      localStorage.setItem('duelken_scores', JSON.stringify(scores));
+      render();
+      form.reset();
     };
   </script>
 </body>
