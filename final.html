@@ -2,59 +2,17 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>🎁 Finale – Spielplatz Schirickstraße</title>
+  <title>🎁 Finale</title>
   <style>
-    body {
-      background: #f1f8e9;
-      font-family: 'Comic Sans MS', sans-serif;
-      max-width: 600px;
-      margin: 2rem auto;
-      padding: 1rem;
-      color: #33691e;
-    }
-    h1 {
-      text-align: center;
-      color: #558b2f;
-      font-size: 2rem;
-      margin-bottom: 1rem;
-    }
-    #timeDisplay {
-      font-size: 1.2rem;
-      margin-bottom: 1rem;
-    }
-    form {
-      margin-bottom: 1.5rem;
-    }
-    input, button {
-      width: 100%;
-      padding: 0.8rem;
-      font-size: 1.1rem;
-      margin-top: 0.5rem;
-      border-radius: 8px;
-      box-sizing: border-box;
-    }
-    input {
-      border: 2px solid #aed581;
-    }
-    button {
-      background: #aed581;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 1rem;
-    }
-    th, td {
-      border: 1px solid #33691e;
-      padding: 0.5rem;
-      text-align: left;
-    }
-    th {
-      background: #c5e1a5;
-    }
+    body { background:#f1f8e9; font-family:'Comic Sans MS',sans-serif; max-width:600px; margin:2rem auto; padding:1rem; color:#33691e; }
+    h1 { text-align:center; color:#558b2f; font-size:2rem; }
+    #timeDisplay { font-size:1.2rem; margin:1rem 0; }
+    form, input, button { width:100%; font-size:1.1rem; margin:.5rem 0; border-radius:8px; box-sizing:border-box; }
+    input { padding:.8rem; border:2px solid #aed581; }
+    button { padding:.8rem; background:#aed581; color:white; border:none; cursor:pointer; }
+    table { width:100%; border-collapse:collapse; margin-top:1rem; }
+    th, td { border:1px solid #33691e; padding:.5rem; text-align:left; }
+    th { background:#c5e1a5; }
   </style>
 </head>
 <body>
@@ -74,48 +32,37 @@
   </table>
 
   <script>
-    // 1) Berechne und zeige die Zeit
     const timerEnabled = localStorage.getItem('duelken_timerEnabled') === 'true';
-    const startTime = timerEnabled 
-      ? parseInt(localStorage.getItem('duelken_startTime'), 10) 
-      : null;
-    const now = Date.now();
-    const diff = (startTime !== null ? now - startTime : 0);
-    const mins = Math.floor(diff / 60000);
-    const secs = Math.floor((diff % 60000) / 1000);
+    const startTime = timerEnabled ? parseInt(localStorage.getItem('duelken_startTime'),10) : null;
+    const diff = timerEnabled ? Date.now() - startTime : 0;
+    const mins = Math.floor(diff/60000), secs = Math.floor((diff%60000)/1000);
     const timeStr = timerEnabled ? `${mins}m ${secs}s` : '–';
     document.getElementById('timeDisplay').textContent = `Deine Zeit: ${timeStr}`;
 
-    // 2) Funktion zum Laden und Rendern der Scores
-    const tableBody = document.querySelector('#resultsTable tbody');
-    function loadAndRender() {
-      const scores = JSON.parse(localStorage.getItem('duelken_scores') || '[]');
-      tableBody.innerHTML = '';
-      scores.forEach(entry => {
+    const tbody = document.querySelector('#resultsTable tbody');
+    function render() {
+      const scores = JSON.parse(localStorage.getItem('duelken_scores')||'[]');
+      tbody.innerHTML = '';
+      scores.forEach(e=>{
         const tr = document.createElement('tr');
-        tr.innerHTML = `<td>${entry.name}</td><td>${entry.time}</td>`;
-        tableBody.appendChild(tr);
+        tr.innerHTML = `<td>${e.name}</td><td>${e.time}</td>`;
+        tbody.appendChild(tr);
       });
     }
+    render();
 
-    // 3) Initiales Rendern beim Laden
-    loadAndRender();
-
-    // 4) Formular-Handling
     document.getElementById('scoreForm').onsubmit = e => {
       e.preventDefault();
       if (!timerEnabled) {
         alert('Timer war nicht aktiviert – kein Eintrag möglich.');
         return;
       }
-      const name = document.getElementById('playerName').value.trim() || '-';
-      const scores = JSON.parse(localStorage.getItem('duelken_scores') || '[]');
-      scores.push({ name, time: timeStr });
+      const n = document.getElementById('playerName').value.trim() || '-';
+      const scores = JSON.parse(localStorage.getItem('duelken_scores')||'[]');
+      scores.push({name:n, time: timeStr});
       localStorage.setItem('duelken_scores', JSON.stringify(scores));
-      // Leere das Eingabefeld
       document.getElementById('playerName').value = '';
-      // Neu rendern
-      loadAndRender();
+      render();
       alert('Danke, dein Eintrag ist gespeichert!');
     };
   </script>
