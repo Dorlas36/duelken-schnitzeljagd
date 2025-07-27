@@ -6,11 +6,11 @@
   <style>
     body { background:#fff8e1; font-family:'Comic Sans MS',sans-serif; max-width:800px; margin:2rem auto; padding:1rem; color:#5d4037; }
     h1 { text-align:center; color:#bf360c; font-size:2rem; margin-bottom:1rem; }
-    #adminBtn { width:100%; padding:0.8rem; background:#33691e; color:white; border:none; border-radius:8px; cursor:pointer; margin-bottom:0.5rem; }
-    table { width:100%; border-collapse:collapse; margin-bottom:1rem; }
-    th, td { border:2px dashed #bf360c; padding:0.5rem; text-align:left; }
+    #adminBtn { width:100%; padding:.8rem; background:#33691e; color:white; border:none; border-radius:8px; cursor:pointer; margin-bottom:.5rem; }
+    table { width:100%; border-collapse:collapse; }
+    th, td { border:2px dashed #bf360c; padding:.5rem; text-align:left; }
     th { background:#ffe0b2; }
-    button.del { background:#d32f2f; color:white; border:none; padding:0.3rem 0.6rem; border-radius:4px; cursor:pointer; }
+    button.del { display:inline-block; margin-left:.5rem; }
   </style>
 </head>
 <body>
@@ -22,33 +22,29 @@
   </table>
 
   <script>
-    // Admin-Passwort (bitte ändern)
     const PASSWORD = 'StreetfighterV2!';
-    let scores = JSON.parse(localStorage.getItem('duelken_scores') || '[]');
+    let scores = JSON.parse(localStorage.getItem('duelken_scores')||'[]');
     const tbody = document.getElementById('results');
 
     function render(admin=false) {
       tbody.innerHTML = '';
-      scores.forEach((e,i) => {
+      scores.forEach((e,i)=>{
         const tr = document.createElement('tr');
-        const delCell = document.createElement('td');
-        if (admin) {
-          const btn = document.createElement('button');
-          btn.textContent = 'Löschen';
-          btn.className = 'del';
-          btn.onclick = () => {
-            if (confirm('Eintrag wirklich löschen?')) {
-              scores.splice(i,1);
-              localStorage.setItem('duelken_scores', JSON.stringify(scores));
-              render(true);
-            }
-          };
-          delCell.appendChild(btn);
-        }
-        tr.innerHTML = `<td>${e.name}</td><td>${e.time}</td>`;
-        tr.appendChild(delCell);
+        const del = admin
+          ? `<button class="del" data-i="${i}">Löschen</button>`
+          : '';
+        tr.innerHTML = `<td>${e.name}</td><td>${e.time}</td><td>${del}</td>`;
         tbody.appendChild(tr);
       });
+      if (admin) {
+        tbody.querySelectorAll('button.del').forEach(btn=>{
+          btn.onclick = () => {
+            scores.splice(btn.dataset.i,1);
+            localStorage.setItem('duelken_scores', JSON.stringify(scores));
+            render(true);
+          };
+        });
+      }
     }
 
     document.getElementById('adminBtn').onclick = () => {
@@ -60,7 +56,7 @@
       }
     };
 
-    // initial render ohne Admin
+    // initial
     render(false);
   </script>
 </body>
